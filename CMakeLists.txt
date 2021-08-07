@@ -15,9 +15,11 @@ include_directories(src)
 
 add_executable(tdd_demo
         src/main.cc
-
+        src/service/service_sort_input.cc
+        
+        test/comm/comm_test.cc
+        test/service/service_sort_input_test.cc
         )
-
 
 
 target_link_libraries(tdd_demo gtest_main gmock)
