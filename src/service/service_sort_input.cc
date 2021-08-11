@@ -14,7 +14,7 @@ ServiceSortInput::~ServiceSortInput() {
 void ServiceSortInput::sort_input_numbers(int argc, char **argv) {
     
     do {
-        please_input_info();
+//        please_input_info();
         
         
     } while (1);

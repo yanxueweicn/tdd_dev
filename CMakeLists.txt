@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(tdd_demo)
+project(tdd_dev)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -13,7 +13,7 @@ include_directories(.)
 include_directories(src)
 
 
-add_executable(tdd_demo
+add_executable(tdd_dev
         src/main.cc
         src/service/service_sort_input.cc
         
@@ -22,7 +22,7 @@ add_executable(tdd_demo
         )
 
 
-target_link_libraries(tdd_demo gtest_main gmock)
+target_link_libraries(tdd_dev gtest_main gmock)
 
 #include(GoogleTest)
 #gtest_discover_tests(study_c_plus_plus)
