@@ -1,4 +1,4 @@
-#ifndef    TDD_DEMO_SRC_COMM_COMM_H
+#ifndef TDD_DEMO_SRC_COMM_COMM_H
 #define TDD_DEMO_SRC_COMM_COMM_H
 
 #include <iostream>

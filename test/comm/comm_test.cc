@@ -6,12 +6,12 @@
 
 #include "gtest/gtest.h"
 
-TEST(display_begin, is_not_empty) {
+TEST(DisplayBegin, IsNotEmpty) {
     std::string ret = display_begin();
     EXPECT_FALSE(ret.empty());
 }
 
-TEST(display_end, is_not_empty) {
+TEST(DisplayEnd, IsNotEmpty) {
     std::string ret = display_end();
     EXPECT_FALSE(ret.empty());
 }
