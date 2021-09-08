@@ -57,4 +57,20 @@ TEST(ServiceSortInput, ConvertToNumberVectorNormal) {
     EXPECT_EQ(dst_vector[0], 0);
     EXPECT_EQ(dst_vector[1], 1);
     
+    src_vector = {"1", "0"};
+    service.ConvertTo(src_vector, dst_vector);
+    EXPECT_EQ(dst_vector.size(), 2);
+    ASSERT_EQ(dst_vector.size(), 2);
+    EXPECT_EQ(dst_vector[0], 0);
+    EXPECT_EQ(dst_vector[1], 1);
+    
+    src_vector = {"1", "0", "2", "5"};
+    service.ConvertTo(src_vector, dst_vector);
+    EXPECT_EQ(dst_vector.size(), 4);
+    ASSERT_EQ(dst_vector.size(), 4);
+    EXPECT_EQ(dst_vector[0], 0);
+    EXPECT_EQ(dst_vector[1], 1);
+    EXPECT_EQ(dst_vector[2], 2);
+    EXPECT_EQ(dst_vector[3], 5);
+    
 }
