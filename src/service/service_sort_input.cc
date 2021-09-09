@@ -21,18 +21,15 @@ void ServiceSortInput::sort_input_numbers(int argc, char **argv) {
         std::vector<int> ret_nums_vector;
         ConvertTo(input_str_nums_vector, ret_nums_vector);
         
-        
         Output(ret_nums_vector);
         
         if (IsQuit()) break;
-        
     } while (true);
 }
 
 void ServiceSortInput::PleaseInputNumbers(std::vector<std::string> &input_str_nums_vector) {
     std::string one_row_string;
-    std::cout << "Please input some numbers:";
-    std::cin.clear();
+    std::cout << std::endl << "Please input some numbers:";
     std::getline(std::cin, one_row_string);
     
     ConvertTo(one_row_string, input_str_nums_vector);
@@ -41,9 +38,8 @@ void ServiceSortInput::PleaseInputNumbers(std::vector<std::string> &input_str_nu
 bool ServiceSortInput::IsQuit() {
     char is_quit = 'N';
     std::cout << std::endl << "Do you want to quite(Y/n)?";
-    std::cin.clear();
     is_quit = std::cin.get();
-    return (is_quit == 'Y' or is_quit == 'y');
+    return (is_quit == 'Y' || is_quit == 'y');
 }
 
 static bool is_find(const string &src_str, const string &pattern, int start_index, int &index) {
@@ -111,9 +107,9 @@ void ServiceSortInput::ConvertTo(const std::vector<std::string> &src_vector, std
 }
 
 void ServiceSortInput::Output(const std::vector<int> &ret_nums_vector) {
+    std::cout << std::endl << "sorted result: ";
     for (auto &one: ret_nums_vector) {
         std::cout << one << " ";
     }
+    std::cout << std::endl;
 }
-
-

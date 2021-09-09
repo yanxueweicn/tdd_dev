@@ -12,8 +12,8 @@ int main(int argc, char *argv[]) {
     
     cout << display_end() << endl;
 //
-//    ::testing::InitGoogleTest(&argc, argv);
-//    int ret = RUN_ALL_TESTS();
+    ::testing::InitGoogleTest(&argc, argv);
+    int ret = RUN_ALL_TESTS();
     
     return 0;
 }
