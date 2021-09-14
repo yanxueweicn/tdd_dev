@@ -37,7 +37,7 @@ void ServiceSortInput::PleaseInputNumbers(std::vector<std::string> &input_str_nu
 
 bool ServiceSortInput::IsQuit() {
     char is_quit = 'N';
-    std::cout << std::endl << "Do you want to quite(Y/n)?";
+    std::cout << std::endl << "Do you want to quit(Y/n)?";
     is_quit = std::cin.get();
     return (is_quit == 'Y' || is_quit == 'y');
 }
@@ -46,23 +46,20 @@ static bool is_find(const string &src_str, const string &pattern, int start_inde
     bool is_have = false;
     do {
         if (src_str.empty() || pattern.empty()) break;
-        
-        char opers[10] = {0};
+    
+        char delimiter_array[10] = {0};
         int size = 10;
         if (size > pattern.size()) size = pattern.size();
-        pattern.copy(opers, size, 0);
-        
-        int temp_index = -1;
+        pattern.copy(delimiter_array, size, 0);
+    
         for (int i = 0; i < size; ++i) {
-            temp_index = src_str.find(opers[i], start_index);
-            
-            if (temp_index != string::npos) {
-                if (index == -1) index = temp_index;
-                else if (index > temp_index) index = temp_index;
+            index = src_str.find(delimiter_array[i], start_index);
+        
+            if (index != string::npos) {
                 is_have = true;
+                break;
             }
         }
-        
     } while (false);
     return is_have;
 }
@@ -77,7 +74,7 @@ void ServiceSortInput::ConvertTo(const string &src_str, std::vector<std::string>
             ret.push_back(src_str);
             break;
         }
-        
+    
         int index = -1, start_index = 0;
         string src(src_str);
         while (is_find(src, pattern, start_index, index)) {
@@ -85,13 +82,9 @@ void ServiceSortInput::ConvertTo(const string &src_str, std::vector<std::string>
 //            ret.push_back(string(1, src[index]));
             src = src.substr(index + 1, src.size() - index - 1);
         }
-        
-        if (index == -1) ret.push_back(src_str);
-        else {
-            ret.push_back(src.substr(start_index, src.length() - start_index));
-        }
-        
-        
+    
+        if (index == -1) ret.push_back(src);
+    
     } while (false);
     
 }
