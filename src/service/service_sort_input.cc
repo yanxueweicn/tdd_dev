@@ -37,24 +37,25 @@ void ServiceSortInput::PleaseInputNumbers(std::vector<std::string> &input_str_nu
 
 bool ServiceSortInput::IsQuit() {
     char is_quit = 'N';
-    std::cout << std::endl << "Do you want to quit(Y/n)?";
-    is_quit = std::cin.get();
+    std::cout << "Do you want to quit(Y/n)?";
+    std::cin >> is_quit;
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     return (is_quit == 'Y' || is_quit == 'y');
 }
 
-static bool is_find(const string &src_str, const string &pattern, int start_index, int &index) {
+static bool is_find(const string &src_str, const string &delimiter_str, int start_index, int &index) {
     bool is_have = false;
     do {
-        if (src_str.empty() || pattern.empty()) break;
-    
+        if (src_str.empty() || delimiter_str.empty()) break;
+        
         char delimiter_array[10] = {0};
         int size = 10;
-        if (size > pattern.size()) size = pattern.size();
-        pattern.copy(delimiter_array, size, 0);
-    
+        if (size > delimiter_str.size()) size = delimiter_str.size();
+        delimiter_str.copy(delimiter_array, size, 0);
+        
         for (int i = 0; i < size; ++i) {
             index = src_str.find(delimiter_array[i], start_index);
-        
+            
             if (index != string::npos) {
                 is_have = true;
                 break;
@@ -100,7 +101,7 @@ void ServiceSortInput::ConvertTo(const std::vector<std::string> &src_vector, std
 }
 
 void ServiceSortInput::Output(const std::vector<int> &ret_nums_vector) {
-    std::cout << std::endl << "sorted result: ";
+    std::cout << "sorted result: ";
     for (auto &one: ret_nums_vector) {
         std::cout << one << " ";
     }
