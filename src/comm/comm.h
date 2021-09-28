@@ -22,5 +22,30 @@ inline std::string display_end() {
     return ret;
 }
 
+class TestClass {
+public:
+    TestClass(const string &name, int age, string &nameAlias, const bool sex);
+    
+    TestClass(const string &name, int age);
+    
+    string ToString(const string &prefix = "") {
+        string ret;
+        ret.reserve(64);
+        
+        ret.append("prefix");
+        ret.append("{");
+        
+        ret.append("}");
+        
+        return ret;
+    }
+
+private:
+    string name_;
+    int age_;
+    string &name_alias_;
+    const bool sex_;
+};
+
 
 #endif /* TDD_DEMO_SRC_COMM_COMM*/

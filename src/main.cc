@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     cout << display_begin() << endl;
     //
     ServiceSortInput service_sort_input;
-    service_sort_input.sort_input_numbers(argc, argv);
+//    service_sort_input.sort_input_numbers(argc, argv);
     
     cout << display_end() << endl;
 //
