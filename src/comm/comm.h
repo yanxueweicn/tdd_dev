@@ -32,8 +32,11 @@ public:
         string ret;
         ret.reserve(64);
         
-        ret.append("prefix");
+        ret.append(prefix);
         ret.append("{");
+        
+        ret.append("name='").append(name_).append("',");
+        ret.append("age=").append(std::to_string(age_));
         
         ret.append("}");
         
@@ -43,8 +46,8 @@ public:
 private:
     string name_;
     int age_;
-    string &name_alias_;
-    const bool sex_;
+    string name_alias_;
+    bool sex_;
 };
 
 
