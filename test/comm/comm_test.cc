@@ -45,49 +45,94 @@ TEST(TestClass, RefAndConstField) {
     
 }
 
-TEST(SimpleObjectPool, Normal) {
-    class Test {
-    public:
-        Test() : age(0) {
-            std::cout << " Ctor\n";
-        }
-        
-        virtual ~Test() {
-            std::cout << " Dctor\n";
-            age = 0;
-            name.clear();
-        }
-        
-        std::string ToString() const {
-            std::string ret;
-            ret.reserve(64);
-            
-            ret.append("{");
-            ret.append("age=").append(std::to_string(age));
-            ret.append(",name=").append(name);
-            ret.append("}");
-            
-            return ret;
-            
-        }
-        
-        int age;
-        std::string name;
-    };
-    SimpleObjectPool<Test> sop(2);
+class TestObject {
+public:
+    TestObject() : age(0), address_ptr(new std::string()) {
+        std::cout << " Ctor\n";
+    }
     
-    Test *one = sop.Get();
-    EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=}");
+    TestObject(const TestObject &other) : age(other.age), name(other.name), address_ptr(other.address_ptr) {
+        std::cout << " CopyCtor\n";
+    }
+    
+    ~TestObject() {
+        std::cout << " Dctor\n";
+        
+    }
+    
+    void ReSet() {
+        age = 0;
+        name.clear();
+        // other
+        if (address_ptr != nullptr)
+            address_ptr->clear();
+    }
+    
+    std::string ToString() const {
+        std::string ret;
+        ret.reserve(64);
+        
+        ret.append("{");
+        ret.append("age=").append(std::to_string(age));
+        ret.append(",name=").append(name);
+        ret.append(",address=").append(*address_ptr);
+        ret.append("}");
+        
+        return ret;
+        
+    }
+    
+    void RefInvoke(const TestObject &other) {
+        std::cout << " RefInvoke!\n";
+    }
+    
+    void CopyConstructor(const TestObject other) {
+        std::cout << " CopyConstructor!\n";
+    }
+    
+    int age;
+    std::string name;
+    std::string *address_ptr;
+};
+
+TEST(SimpleObjectPool, Normal) {
+    SimpleObjectPool<TestObject> sop(2);
+    
+    TestObject *one = sop.Get();
+    EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=,address=}");
     
     one->age = 10;
     one->name = "lele";
-    EXPECT_STREQ(one->ToString().c_str(), "{age=10,name=lele}");
+    one->address_ptr->assign("shenzhen");
+    EXPECT_STREQ(one->ToString().c_str(), "{age=10,name=lele,address=shenzhen}");
+    
+    //judge ref or copy test
+    TestObject test_object;
+    one->RefInvoke(test_object);
+    
+    one->CopyConstructor(test_object);
+    
     // using other logic
     sop.Return(one);
-    EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=}");
+    EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=,address=}");
     
     one = sop.Get();
-    EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=}");
+    EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=,address=}");
     sop.Return(one);
+    
+}
+
+TEST(ObjectPoolTool, Normal) {
+    SimpleObjectPool<TestObject> sop(2);
+    EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=2,make_pool_size=2}");
+    {
+        ObjectPoolTool<TestObject> pool_tool(sop);
+        TestObject *one = pool_tool.Get();
+        // using very operator
+        
+        EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=1,make_pool_size=2}");
+        
+    }
+    EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=2,make_pool_size=2}");
     
 }
