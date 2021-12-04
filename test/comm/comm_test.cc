@@ -64,8 +64,7 @@ public:
         age = 0;
         name.clear();
         // other
-        if (address_ptr != nullptr)
-            address_ptr->clear();
+        address_ptr->clear();
     }
     
     std::string ToString() const {
@@ -92,7 +91,7 @@ public:
     
     int age;
     std::string name;
-    std::string *address_ptr;
+    std::shared_ptr<std::string> address_ptr;
 };
 
 TEST(SimpleObjectPool, Normal) {
