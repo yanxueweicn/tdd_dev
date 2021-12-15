@@ -22,41 +22,28 @@ TEST(DisplayBegin, IsNotEmpty) {
 
 class TestObject {
 public:
-    TestObject() : age(0), address_ptr(new std::string()) {
+    TestObject() : age_(0), address_ptr_(new std::string()) {
         std::cout << " Ctor\n";
     }
     
-    TestObject(int age, const string &name) : age(age), name(name), address_ptr(new std::string()) {}
+    TestObject(int age, const string &name) : age_(age), name_(name), address_ptr_(new std::string()) {}
     
-    TestObject(const TestObject &other) : age(other.age), name(other.name), address_ptr(other.address_ptr) {
+    TestObject(const TestObject &other) : age_(other.age_), name_(other.name_), address_ptr_(other.address_ptr_) {
         std::cout << " CopyCtor\n";
     }
     
     ~TestObject() {
         std::cout << " Dctor\n";
-        
+    
     }
     
     void ReSet() {
-        age = 0;
-        name.clear();
+        age_ = 0;
+        name_.clear();
         // other
-        address_ptr->clear();
+        address_ptr_->clear();
     }
     
-    std::string ToString() const {
-        std::string ret;
-        ret.reserve(64);
-        
-        ret.append("{");
-        ret.append("age=").append(std::to_string(age));
-        ret.append(",name=").append(name);
-        ret.append(",address=").append(*address_ptr);
-        ret.append("}");
-        
-        return ret;
-        
-    }
     
     void RefInvoke(const TestObject &other) {
         std::cout << " RefInvoke!\n";
@@ -66,9 +53,30 @@ public:
         std::cout << " CopyConstructor!\n";
     }
     
-    int age;
-    std::string name;
-    std::shared_ptr<std::string> address_ptr;
+    std::string ToString() const {
+        std::string ret;
+        ret.reserve(64);
+        
+        ret.append("{");
+        ret.append("age=").append(std::to_string(age_));
+        ret.append(",name=").append(name_);
+        ret.append(",address=").append(*address_ptr_);
+        ret.append("}");
+        
+        return ret;
+        
+    }
+    
+    void MakeTestObject(int age, const std::string &name, const std::string &address) {
+        age_ = age;
+        name_ = name;
+        address_ptr_->assign(address);
+    }
+
+private:
+    int age_;
+    std::string name_;
+    std::shared_ptr<std::string> address_ptr_;
 };
 
 TEST(TestClass, RefAndConstField) {
@@ -105,9 +113,7 @@ TEST(SimpleObjectPool, Normal) {
     TestObject *one = sop.Get();
     EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=,address=}");
     
-    one->age = 10;
-    one->name = "lele";
-    one->address_ptr->assign("shenzhen");
+    one->MakeTestObject(10, "lele", "shenzhen");
     EXPECT_STREQ(one->ToString().c_str(), "{age=10,name=lele,address=shenzhen}");
     
     //judge ref or copy test
