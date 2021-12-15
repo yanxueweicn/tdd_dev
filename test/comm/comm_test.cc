@@ -138,10 +138,14 @@ TEST(ObjectPoolTool, Normal) {
     {
         ObjectPoolTool<TestObject> pool_tool(sop);
         TestObject *one = pool_tool.Get();
-        // using very operator
-        
         EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=1,make_pool_size=2}");
-        
+    
+        EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=,address=}");
+        // using very operator
+        one->MakeTestObject(42, "fanyan", "sz");
+        EXPECT_STREQ(one->ToString().c_str(), "{age=42,name=fanyan,address=sz}");
+    
+    
     }
     EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=2,make_pool_size=2}");
     
