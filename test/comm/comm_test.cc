@@ -19,37 +19,14 @@ TEST(DisplayBegin, IsNotEmpty) {
 //    std::string ret = display_end();
 //    EXPECT_FALSE(ret.empty());
 //}
-TEST(TestClass, RefAndConstField) {
-    // test ref is not transfer
-    int a = 2;
-    int &b = a;
-    EXPECT_EQ(b, a);
-    
-    int c = 5;
-    b = c;
-    EXPECT_EQ(b, c);
-    EXPECT_EQ(a, b);
-    EXPECT_EQ(a, 5);
-    
-    ++b;
-    EXPECT_EQ(b, 6);
-    EXPECT_EQ(c, 5);
-    
-    // test const field and ref field can't use default constructor&assignment method
-    TestClass test_one("fanyan", 42);
-    TestClass test_two("yxw", 24);
-    TestClass test_three(test_one);
-    
-    test_two = test_one;
-    EXPECT_STREQ(test_one.ToString().c_str(), "{name='fanyan',age=42}");
-    
-}
 
 class TestObject {
 public:
     TestObject() : age(0), address_ptr(new std::string()) {
         std::cout << " Ctor\n";
     }
+    
+    TestObject(int age, const string &name) : age(age), name(name), address_ptr(new std::string()) {}
     
     TestObject(const TestObject &other) : age(other.age), name(other.name), address_ptr(other.address_ptr) {
         std::cout << " CopyCtor\n";
@@ -93,6 +70,34 @@ public:
     std::string name;
     std::shared_ptr<std::string> address_ptr;
 };
+
+TEST(TestClass, RefAndConstField) {
+    // test ref is not transfer
+    int a = 2;
+    int &b = a;
+    EXPECT_EQ(b, a);
+    
+    int c = 5;
+    b = c;
+    EXPECT_EQ(b, c);
+    EXPECT_EQ(a, b);
+    EXPECT_EQ(a, 5);
+    
+    ++b;
+    EXPECT_EQ(b, 6);
+    EXPECT_EQ(c, 5);
+    
+    // test const field and ref field can't use default constructor&assignment method
+    TestObject test_one(42, "fanyan");
+    
+    TestObject test_two(24, "yxw");
+    TestObject test_three(test_one);
+    
+    test_two = test_one;
+    EXPECT_STREQ(test_one.ToString().c_str(), "{age=42,name=fanyan,address=}");
+    
+}
+
 
 TEST(SimpleObjectPool, Normal) {
     SimpleObjectPool<TestObject> sop(2);
