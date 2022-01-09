@@ -4,6 +4,7 @@
 
 #include "comm/comm.h"
 #include "comm/simple_object_pool.h"
+#include "comm/template_meta_program.h"
 
 #include "gtest/gtest.h"
 
@@ -149,4 +150,8 @@ TEST(ObjectPoolTool, Normal) {
     }
     EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=2,make_pool_size=2}");
     
+}
+
+TEST(TmpDemo, IsRun) {
+    TmpDemo<bool, true, SimpleObjectPool, int> tmp_deom;
 }

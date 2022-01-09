@@ -17,6 +17,7 @@ add_executable(tdd_dev
         src/main.cc
         src/comm/comm.cc
         src/comm/simple_object_pool.h
+        src/comm/template_meta_program.h
         src/service/service_sort_input.cc
         
         test/comm/comm_test.cc
