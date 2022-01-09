@@ -155,3 +155,10 @@ TEST(ObjectPoolTool, Normal) {
 TEST(TmpDemo, IsRun) {
     TmpDemo<bool, true, SimpleObjectPool, int> tmp_deom;
 }
+
+TEST(TmpDemoFunc, IsVarArgs) {
+    EXPECT_STREQ(TmpDemoFunction("fanyan", " game!").c_str(), "fanyan game!");
+    EXPECT_STREQ(TmpDemoFunction(1, 9).c_str(), "19");
+    EXPECT_STREQ(TmpDemoFunction(1, 9.99).c_str(), "19.990000");
+    //
+}
