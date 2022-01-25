@@ -35,7 +35,7 @@ public:
     
     ~TestObject() {
         std::cout << " Dctor\n";
-    
+        
     }
     
     void ReSet() {
@@ -140,13 +140,13 @@ TEST(ObjectPoolTool, Normal) {
         ObjectPoolTool<TestObject> pool_tool(sop);
         TestObject *one = pool_tool.Get();
         EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=1,make_pool_size=2}");
-    
+        
         EXPECT_STREQ(one->ToString().c_str(), "{age=0,name=,address=}");
         // using very operator
         one->MakeTestObject(42, "fanyan", "sz");
         EXPECT_STREQ(one->ToString().c_str(), "{age=42,name=fanyan,address=sz}");
-    
-    
+        
+        
     }
     EXPECT_STREQ(sop.ToString().c_str(), "{pool_size=2,make_pool_size=2}");
     
@@ -154,6 +154,20 @@ TEST(ObjectPoolTool, Normal) {
 
 TEST(TmpDemo, IsRun) {
     TmpDemo<bool, true, SimpleObjectPool, int> tmp_deom;
+}
+
+TEST(TmpDemoFunction, IsSame) {
+    bool ret = std::is_same<int, int32_t>::value;
+    EXPECT_TRUE(ret);
+    
+    ret = std::is_same<short, int>::value;
+    EXPECT_FALSE(ret);
+    
+    ret = std::is_same<const char *, const char[]>::value;
+    EXPECT_FALSE(ret);
+    
+    ret = std::is_same<std::is_same<bool, bool>, std::true_type>::value;
+    EXPECT_FALSE(ret);
 }
 
 TEST(TmpDemoFunc, IsVarArgs) {
