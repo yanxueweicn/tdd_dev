@@ -13,6 +13,9 @@ TEST(NewFeatureCXX11, NormalAuto) {
     std::string ret;
     ret.reserve(256);
     
+    // auto ref const voliate lost
+    // auto
+    
     // auto support initialization list
     for (const auto &i: {1, 2, 3, 4})
         ret.append(std::to_string(i)).append(" ");
