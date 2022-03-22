@@ -1,6 +1,9 @@
 @startuml
 'https://plantuml.com/sequence-diagram
+title
+ <b>Static Init TestInfo by MakeAndRegisterTestInfo
 
+end title
 participant "SubClass of Test" as Test
 participant "CodeLocation"
 participant "::testing::internal::GetTestTypeId()" as TypeId
@@ -13,44 +16,60 @@ autonumber
 activate Test
 Test -> Test ++ : invoke MakeAndRegisterTestInfo(...)
 
-'init method parameters
-Test ->  CodeLocation ++ : invoke CodeLocation(filename,line)
-return ret codeLocation instance
-Test -> TypeId ++ : invoke GetTestTypeId()
-return ret void* pointer
-Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetSetUpCaseOrSuite()
-return ret Test::SetUpTestSuite() pointer
-Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetTearDownCaseOrSuite()
-return ret Test::TearDownTestSuite() pointer
-Test -> TestFactoryImpl ++ : new TestFactoryImpl()
-return ret TestFactoryBase instance pointer
+group init method parameters [init CodeLocation TypeId SetUpTestSuiteFunc TearDownTestSuiteFunc TestFactoryImpl]
+    Test ->  CodeLocation ++ : invoke CodeLocation(filename,line)
+    return ret codeLocation instance
+    Test -> TypeId ++ : invoke GetTestTypeId()
+    return ret void* pointer
+    Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetSetUpCaseOrSuite()
+    return ret Test::SetUpTestSuite() pointer
+    Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetTearDownCaseOrSuite()
+    return ret Test::TearDownTestSuite() pointer
+    Test -> TestFactoryImpl ++ : new TestFactoryImpl()
+    return ret TestFactoryBase instance pointer
+end
 
-'invoke methods
-Test -> TestInfo ++ : new TestInfo()
-return ret TestInfo instance pointer
-Test -> UnitTest ++ : invoke GetInstance()
-UnitTest -> UnitTest ++ : invoke default constructor
-UnitTest -> UnitTestImpl ++ : new UnitTestImpl(this)
-UnitTestImpl -> UnitTestImpl ++ : invoke default constructor
-UnitTestImpl -> UnitTestImpl  : invoke listeners()
-UnitTestImpl -> TestEventListeners ++ : invoke SetDefaultResultPrinter(new PrettyUnitTestResultPrinter)
-return  ret void
-deactivate UnitTestImpl
-return ret UnitTest instance pointer
-UnitTest -> UnitTest -- : invoke impl()
-return UnitTestImpl instance pointer
-Test -> UnitTestImpl ++ : invoke AddTestInfo(set_up_tc, tear_down_tc, test_info)
-UnitTestImpl -> UnitTestImpl ++ : invoke GetTestSuite(...)
-UnitTestImpl -> UnitTestImpl  : invoke std::find_if(...) by test_suite_name
-UnitTestImpl -> UnitTestImpl -- : if found ret TestSuite*
-UnitTestImpl -> UnitTestImpl ++ : if no found
-UnitTestImpl -> TestSuite ++ : new TestSuite(...)
-return ret TestSuite instance pointer
-UnitTestImpl -> UnitTestImpl : IsDeathTestSuite?invoke UnitTestOptions::MatchesFilter(test_suite_name,kDeathTestSuiteFilter)
-UnitTestImpl -> UnitTestImpl : yes  ++last_death_test_suite_ and insert last index of test_suites
-UnitTestImpl -> UnitTestImpl : no  test_suites_.push_back(new_test_suite)
-UnitTestImpl -> UnitTestImpl : test_suite_indices_.push_back(static_cast<int>(test_suite_indices_.size()))
+group invoke methods
+    Test -> TestInfo ++ : new TestInfo()
+    return ret TestInfo instance pointer
+    Test -> UnitTest ++ : invoke GetInstance()
+    UnitTest -> UnitTest ++ : invoke default constructor
+    UnitTest -> UnitTestImpl ++ : new UnitTestImpl(this)
+    UnitTestImpl -> UnitTestImpl ++ : invoke default constructor
+    UnitTestImpl -> UnitTestImpl  : invoke listeners()
+    UnitTestImpl -> TestEventListeners ++ : invoke SetDefaultResultPrinter(new PrettyUnitTestResultPrinter)
+    return  ret void
+    deactivate UnitTestImpl
+    return ret UnitTest instance pointer
+    UnitTest -> UnitTest -- : invoke impl()
+    return UnitTestImpl instance pointer
+    Test -> UnitTestImpl ++ : invoke UnitTestImpl->AddTestInfo(set_up_tc, tear_down_tc, test_info)
+    UnitTestImpl -> UnitTestImpl ++ : invoke AddTestInfo(...)
+    UnitTestImpl -> UnitTestImpl ++ : invoke GetTestSuite(...)
+    UnitTestImpl -> UnitTestImpl  : invoke std::find_if(...) by test_suite_name
 
+    alt  found_exist
+        'UnitTestImpl -> UnitTestImpl  :  ret TestSuite*
+        return  ret TestSuite*
+    else no_found then create one
+        UnitTestImpl -> UnitTestImpl ++ : create TestSuite
+        UnitTestImpl -> TestSuite ++ : new TestSuite(...)
+        return ret TestSuite instance pointer
+        UnitTestImpl -> UnitTestImpl : IsDeathTestSuite?invoke UnitTestOptions::MatchesFilter(test_suite_name,kDeathTestSuiteFilter)
+        alt yes it's death test suite
+            UnitTestImpl -> UnitTestImpl : ++last_death_test_suite_ and insert last index of test_suites
+        else no
+            UnitTestImpl -> UnitTestImpl : test_suites_.push_back(new_test_suite)
+        end
+        UnitTestImpl -> UnitTestImpl : test_suite_indices_.push_back(static_cast<int>(test_suite_indices_.size()))
+        return ret TestSuite instance pointer
+    end
+    UnitTestImpl -> TestSuite ++ : invoke TestSuite->AddTestInfo(test_info*)
+    return ret void
+    return ret void
+    return ret void
+    return ret TestInfo*
+end
 
 
 @enduml
