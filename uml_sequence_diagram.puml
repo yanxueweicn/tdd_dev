@@ -2,8 +2,8 @@
 'https://plantuml.com/sequence-diagram
 title
  <b>Static Init TestInfo by MakeAndRegisterTestInfo
-
 end title
+
 participant "SubClass of Test" as Test
 participant "CodeLocation"
 participant "::testing::internal::GetTestTypeId()" as TypeId
