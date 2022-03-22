@@ -1,0 +1,220 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+
+class UnitTest{
+    - UnitTest()
+    - virtual ~UnitTest()
+    + const TestResult& ad_hoc_test_result() const
+    - Environment* AddEnvironment(Environment* env)
+    - void AddTestPartResult(TestPartResult::Type result_type,
+             const char* file_name, int line_number,
+             const std::string& message, const std::string& os_stack_trace)
+    + const TestInfo* current_test_info() const
+    + const TestSuite* current_test_suite() const
+    + {static} UnitTest* GetInstance();
+    - GetMutableTestSuite(int i)
+    + const TestSuite* GetTestSuite(int i) const
+    - internal::UnitTestImpl* impl()
+    - const internal::UnitTestImpl* impl() const
+    + TestEventListeners& listeners()
+    + internal::ParameterizedTestSuiteRegistry& parameterized_test_registry()
+    + int random_seed() const
+    + int Run()
+    ==members==
+    mutable internal::Mutex mutex_;
+    internal::UnitTestImpl* impl_;
+}
+
+class UnitTestImpl{
+    + explicit UnitTestImpl(UnitTest* parent)
+    + virtual ~UnitTestImpl()
+    + const TestResult* ad_hoc_test_result() const
+    + void AddTestInfo(internal::SetUpTestSuiteFunc set_up_tc,
+        internal::TearDownTestSuiteFunc tear_down_tc,
+        TestInfo* test_info)
+    + TestResult* current_test_result()
+    + const TestSuite* current_test_suite() const
+    + TestInfo* current_test_info()
+    + const TestInfo* current_test_info()
+    + std::string CurrentOsStackTraceExceptTop(int skip_count)
+    + internal::DeathTestFactory* death_test_factory()
+    + TestSuite* GetMutableSuiteCase(int i)
+    + TestSuite* GetTestSuite(const char* test_suite_name, const char* type_param,
+            internal::SetUpTestSuiteFunc set_up_tc,
+            internal::TearDownTestSuiteFunc tear_down_tc)
+    + const TestSuite* GetTestSuite(int i) const
+    + TestEventListeners* listeners()
+    + void PostFlagParsingInit()
+    + bool RunAllTests()
+    + void ShuffleTests()
+    + void UnshuffleTests()
+    + internal::TypeParameterizedTestSuiteRegistry& type_parameterized_test_registry()
+    ==members==
+    - TestResult ad_hoc_test_result_;
+    - bool catch_exceptions_;
+    - TestInfo* current_test_info_;
+    - TestSuite* current_test_suite_;
+    - std::unique_ptr<InternalRunDeathTestFlag> internal_run_death_test_flag_;
+    - std::unique_ptr<internal::DeathTestFactory> death_test_factory_;
+    - std::vector<Environment*> environments_;
+    - internal::Mutex global_test_part_result_reporter_mutex_;
+    - TestPartResultReporterInterface* global_test_part_result_repoter_;
+    - int last_death_test_suite_;
+    - TestEventListeners listeners_;
+    - internal::ParameterizedTestSuiteRegistry parameterized_test_registry_;
+    - internal::TypeParameterizedTestSuiteRegistry type_parameterized_test_registry_;
+    - UnitTest* const parent_;
+    - int random_seed_;
+    - internal::Random random_;
+    - std::vector<int> test_suite_indices_;
+    - std::vector<TestSuite*> test_suites_;
+}
+
+
+class TestSuite{
+    + TestSuite(const char* name, const char* a_type_param,
+          internal::SetUpTestSuiteFunc set_up_tc,
+          internal::TearDownTestSuiteFunc tear_down_tc)
+    + virtual ~TestSuite()
+    + const TestResult& ad_hoc_test_result() const
+    - void AddTestInfo(TestInfo * test_info)
+    - TestInfo* GetMutableTestInfo(int i)
+    + const TestInfo* GetTestInfo(int i) const
+    - void Run()
+    - void RunSetUpTestSuite()
+    - void RunTearDownTestSuite()
+    - void ShuffleTests(internal::Random* random);
+    - void UnshuffleTests();
+    ==members==
+    - std::string name_;
+    - const std::unique_ptr<const ::std::string> type_param_;
+    - internal::SetUpTestSuiteFunc set_up_tc_;
+    - internal::TearDownTestSuiteFunc tear_down_tc_;
+    - bool should_run_;
+    - TimeInMillis start_timestamp_;
+    - TimeInMillis elapsed_time_;
+    - TestResult ad_hoc_test_result_;
+    - std::vector<TestInfo*> test_info_list_;
+    - std::vector<int> test_indices_;
+ }
+
+class TestInfo{
+    - TestInfo(const std::string& test_suite_name, const std::string& name,
+            const char* a_type_param, const char* a_value_param,
+            internal::CodeLocation a_code_location,
+            internal::TypeId fixture_class_id, internal::TestFactoryBase* factory)
+    ==members==
+    - const std::string test_suite_name_;
+    - const std::string name_;
+    - const std::unique_ptr<const ::std::string> type_param_;
+    - const std::unique_ptr<const ::std::string> value_param_;
+    - internal::CodeLocation location_;
+    - const internal::TypeId fixture_class_id_;
+    - bool should_run_;
+    - bool is_disabled_;
+    - bool matches_filter_;
+    - bool is_in_another_shard_;
+    - internal::TestFactoryBase* const factory_;
+    - TestResult result_;
+}
+
+abstract class TestFactoryBase{
+    # TestFactoryBase()
+    + virtual ~TestFactoryBase()
+    + virtual Test* CreateTest() = 0
+}
+class TestFactoryImpl{
+    + Test* CreateTest() override
+}
+
+class ParameterizedTestFactory{
+    + Test* CreateTest() override
+}
+
+abstract class Test{
+    # Test()
+    + ~Test()
+    - void DeleteSelf_()
+    + {static} bool HasFailure()
+    + {static} bool HasFatalFailure()
+    + {static} bool HasNoneFatalFailure()
+    - {static} bool HasSameFixtureClass()
+    + {static} bool IsSkipped()
+    + {static} void RecordProperty(const std::string& key,const std::string& value)
+    + {static} void RecordProperty(const std::string& key,int value)
+    - void Run()
+    # virtual void SetUp()
+    # virtual void TearDown()
+    + {static} void SetUpTestSuit()
+    + {static} void TearDownTestSuit()
+    - virtual void TestBody()=0
+    ==members==
+    - const std::unique_ptr<::testing::internal::GTestFlagSaver> g_test_flag_saver_;
+}
+
+class UserAllKindsTestCase
+
+class TestEventListeners{
+    + TestEventListeners()
+    + ~TestEventListeners()
+    + void Append(TestEventListener* listener)
+    + TestEventListener* Release(TestEventListener* listener)
+    - void SetDefaultResultPrinter(TestEventListener* listener)
+    ==members==
+    internal::TestEventRepeater* repeater_;
+    TestEventListener* default_result_printer_;
+    TestEventListener* default_xml_generator_;
+}
+
+class TestEventRepeater{
+    + TestEventRepeater()
+    + ~TestEventRepeater()
+    + void OnXXXXStartOrEnd(const UnitTestOrTestSuitOrTestInfo&)
+    ==members==
+    - bool forwarding_enabled_;
+    - std::vector<TestEventListener*> listeners_;
+}
+
+interface TestEventListener{
+    + virtual ~TestEventListener()
+    + virtual void OnEnvironmentsSetUpStart(const UnitTest& unit_test) = 0
+    + virtual void OnEnvironmentsSetUpEnd(const UnitTest& unit_test) = 0
+    + virtual void OnEnvironmentsTearDownStart(const UnitTest& unit_test) = 0
+    + virtual void OnEnvironmentsTearDownEnd(const UnitTest& unit_test) = 0
+    + virtual void OnTestProgramStart(const UnitTest& unit_test) = 0
+    + virtual void OnTestProgramEnd(const UnitTest& unit_test) = 0
+    + virtual void OnTestIterationStart(const UnitTest& unit_test,int iteration) = 0
+    + virtual void OnTestIterationEnd(const UnitTest& unit_test,int iteration) = 0
+    + virtual void OnTestSuiteStart(const TestSuite&)
+    + virtual void OnTestSuiteEnd(const TestSuite&)
+    + virtual void OnTestStart(const TestInfo& test_info) = 0
+    + virtual void OnTestEnd(const TestInfo& test_info) = 0
+    + virtual void OnTestPartResult(const TestPartResult& test_part_result) = 0
+    ==members==
+}
+class BriefUnitTestResultPrinter implements TestEventListener
+class PrettyUnitTestResultPrinter implements TestEventListener
+class EmptyTestEventListener implements TestEventListener
+class JsonUnitTestResultPrinter extends EmptyTestEventListener
+class StreamingListener extends EmptyTestEventListener
+class XmlUnitTestResultPrinter extends EmptyTestEventListener
+
+UnitTest *-- "1" UnitTestImpl
+UnitTestImpl o-- "0..*" TestSuite
+TestSuite  o-- "0..*" TestInfo
+TestInfo *-d- "1" TestFactoryBase
+TestFactoryBase -r- "   1" Test: create
+UserAllKindsTestCase -up-|> Test
+TestFactoryImpl -u-|> TestFactoryBase
+ParameterizedTestFactory -u-|> TestFactoryBase
+
+UnitTestImpl *-- "1" TestEventListeners
+TestEventListeners o-- "1" TestEventRepeater
+TestEventListeners o-- "2" TestEventListener
+TestEventRepeater o-- "0..*" TestEventListener
+TestEventRepeater ..|>  TestEventListener
+
+
+
+@enduml

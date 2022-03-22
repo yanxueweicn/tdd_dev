@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
 //    service_sort_input.sort_input_numbers(argc, argv);
     
     cout << display_end() << endl;
-//
+    
     ::testing::InitGoogleTest(&argc, argv);
     int ret = RUN_ALL_TESTS();
     
