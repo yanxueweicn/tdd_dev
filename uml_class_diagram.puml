@@ -7,6 +7,24 @@ title
 
 end title
 
+/'
+abstract class|class|interface|enum|entity|annotation
+class Son<? extends Farther> << (S,#add1b2) Singleton >> extends|implements {
+    -|+|#|~ {static|abstract} 返回值 方法名 修饰符
+    ==members== or .. or --
+    修饰符 类型 变量名;
+}
+note top|bottom|left|right (of Son) : description
+note "description" as nid
+note as n1
+
+end note
+Son .. nid
+
+
+Son "0..1" -|> or *-> or o-> "0..*" One : 描述动作 > or <
+
+'/
 
 class UnitTest {
     - UnitTest()

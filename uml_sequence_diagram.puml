@@ -4,18 +4,46 @@ title
  <b>Static Init TestInfo by MakeAndRegisterTestInfo
 end title
 
-participant "SubClass of Test"  as Test  order -2
+'actor boundary control collections database entity queue
+'participant "SubClass of Test"  as Test  << (C,#add1b2) subclass >> order -2 #business
+participant "SubClass of Test"  as Test  order -2 #business
 participant "CodeLocation"
 participant "::testing::internal::GetTestTypeId()" as TypeId
 participant "SuiteApiResolver"
 participant "TestFactoryImpl"
 participant "TestInfo"
 
+'autonumber start increment "<u>0|#.</u>"
 autonumber 1 1 "<b>."
 
+'activate participant #color
 activate Test #gold
+'participant -> participant ++|--|**|!! #color"
 Test -> Test ++ : invoke MakeAndRegisterTestInfo(...)
 
+/'
+group 主标题 [副标题]
+    bob -[#red]> alice : hello
+    [-> alice : DoWork
+    create actor|control|boundary|control|... participant
+    bob -> participant : new
+    / (h|r)note left|right|over|across of alice: this is note
+    ref over bob,alice : init
+    ... 5分钟后 ...
+    bob <[#blue]- alice : ret
+    |||
+    ||40||
+    alt#alt背景色 #整体背景色 主标题
+        break|critical|loop|opt|par 主标题
+
+        end
+    else 标题
+
+    else 标题2
+
+    end
+end
+'/
 group init method parameters [init CodeLocation TypeId SetUpTestSuiteFunc TearDownTestSuiteFunc TestFactoryImpl]
     Test ->  CodeLocation ++ : invoke CodeLocation(filename,line)
     return ret codeLocation instance
@@ -48,10 +76,10 @@ group invoke methods
     UnitTestImpl -> UnitTestImpl ++ : invoke GetTestSuite(...)
     UnitTestImpl -> UnitTestImpl  : invoke std::find_if(...) by test_suite_name
 
-    alt  found_exist
+    alt#gold  #business found_exist
         'UnitTestImpl -> UnitTestImpl  :  ret TestSuite*
         return  ret TestSuite*
-    else no_found then create one
+    else #yellow no_found then create one
         UnitTestImpl -> UnitTestImpl ++ : create TestSuite
         UnitTestImpl -> TestSuite ++ : new TestSuite(...)
         return ret TestSuite instance pointer
