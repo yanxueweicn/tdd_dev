@@ -1,8 +1,14 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+title
 
-class UnitTest{
+<b>Gtest整体核心类图
+
+end title
+
+
+class UnitTest {
     - UnitTest()
     - virtual ~UnitTest()
     + const TestResult& ad_hoc_test_result() const

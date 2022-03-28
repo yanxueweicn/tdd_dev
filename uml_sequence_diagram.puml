@@ -4,16 +4,16 @@ title
  <b>Static Init TestInfo by MakeAndRegisterTestInfo
 end title
 
-participant "SubClass of Test" as Test
+participant "SubClass of Test"  as Test  order -2
 participant "CodeLocation"
 participant "::testing::internal::GetTestTypeId()" as TypeId
 participant "SuiteApiResolver"
 participant "TestFactoryImpl"
 participant "TestInfo"
 
-autonumber
+autonumber 1 1 "<b>."
 
-activate Test
+activate Test #gold
 Test -> Test ++ : invoke MakeAndRegisterTestInfo(...)
 
 group init method parameters [init CodeLocation TypeId SetUpTestSuiteFunc TearDownTestSuiteFunc TestFactoryImpl]
@@ -28,7 +28,7 @@ group init method parameters [init CodeLocation TypeId SetUpTestSuiteFunc TearDo
     Test -> TestFactoryImpl ++ : new TestFactoryImpl()
     return ret TestFactoryBase instance pointer
 end
-
+|||
 group invoke methods
     Test -> TestInfo ++ : new TestInfo()
     return ret TestInfo instance pointer
@@ -43,8 +43,8 @@ group invoke methods
     return ret UnitTest instance pointer
     UnitTest -> UnitTest -- : invoke impl()
     return UnitTestImpl instance pointer
-    Test -> UnitTestImpl ++ : invoke UnitTestImpl->AddTestInfo(set_up_tc, tear_down_tc, test_info)
-    UnitTestImpl -> UnitTestImpl ++ : invoke AddTestInfo(...)
+    Test -> UnitTestImpl ++ #gold : invoke UnitTestImpl->AddTestInfo(set_up_tc, tear_down_tc, test_info)
+    UnitTestImpl -> UnitTestImpl ++ #Yellow: invoke AddTestInfo(...)
     UnitTestImpl -> UnitTestImpl ++ : invoke GetTestSuite(...)
     UnitTestImpl -> UnitTestImpl  : invoke std::find_if(...) by test_suite_name
 
@@ -56,7 +56,7 @@ group invoke methods
         UnitTestImpl -> TestSuite ++ : new TestSuite(...)
         return ret TestSuite instance pointer
         UnitTestImpl -> UnitTestImpl : IsDeathTestSuite?invoke UnitTestOptions::MatchesFilter(test_suite_name,kDeathTestSuiteFilter)
-        alt yes it's death test suite
+        alt yes its death test suite
             UnitTestImpl -> UnitTestImpl : ++last_death_test_suite_ and insert last index of test_suites
         else no
             UnitTestImpl -> UnitTestImpl : test_suites_.push_back(new_test_suite)
@@ -69,7 +69,8 @@ group invoke methods
     return ret void
     return ret void
     return ret TestInfo*
+    |||
 end
-
+|||
 
 @enduml
