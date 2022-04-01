@@ -1,0 +1,104 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+title
+ <b>Static Init TestInfo by MakeAndRegisterTestInfo
+end title
+
+'actor boundary control collections database entity queue
+'participant "SubClass of Test"  as Test  << (C,#add1b2) subclass >> order -2 #business
+participant "SubClass of Test"  as Test  order -2 #business
+participant "CodeLocation"
+participant "::testing::internal::GetTestTypeId()" as TypeId
+participant "SuiteApiResolver"
+participant "TestFactoryImpl"
+participant "TestInfo"
+
+'autonumber start increment "<u>0|#.</u>"
+autonumber 1 1 "<b>."
+
+'activate participant #colouml_sequence_diagram.pumlr
+activate Test #gold
+'participant -> participant ++|--|**|!! #color"
+Test -> Test ++ : invoke MakeAndRegisterTestInfo(...)
+
+/'
+group 主标题 [副标题]
+    bob -[#red]> alice : hello
+    [-> alice : DoWork
+    create actor|control|boundary|control|... participant
+    bob -> participant : new
+    / (h|r)note left|right|over|across of alice: this is note
+    ref over bob,alice : init
+    ... 5分钟后 ...
+    bob <[#blue]- alice : ret
+    |||
+    ||40||
+    alt#alt背景色 #整体背景色 主标题
+        break|critical|loop|opt|par 主标题
+
+        end
+    else 标题
+
+    else 标题2
+
+    end
+end
+'/
+group init method parameters [init CodeLocation TypeId SetUpTestSuiteFunc TearDownTestSuiteFunc TestFactoryImpl]
+    Test ->  CodeLocation ++ : invoke CodeLocation(filename,line)
+    return ret codeLocation instance
+    Test -> TypeId ++ : invoke GetTestTypeId()
+    return ret void* pointer
+    Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetSetUpCaseOrSuite()
+    return ret Test::SetUpTestSuite() pointer
+    Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetTearDownCaseOrSuite()
+    return ret Test::TearDownTestSuite() pointer
+    Test -> TestFactoryImpl ++ : new TestFactoryImpl()
+    return ret TestFactoryBase instance pointer
+end
+|||
+group invoke methods
+    Test -> TestInfo ++ : new TestInfo()
+    return ret TestInfo instance pointer
+    Test -> UnitTest ++ : invoke GetInstance()
+    UnitTest -> UnitTest ++ : invoke default constructor
+    UnitTest -> UnitTestImpl ++ : new UnitTestImpl(this)
+    UnitTestImpl -> UnitTestImpl ++ : invoke default constructor
+    UnitTestImpl -> UnitTestImpl  : invoke listeners()
+    UnitTestImpl -> TestEventListeners ++ : invoke SetDefaultResultPrinter(new PrettyUnitTestResultPrinter)
+    return  ret void
+    deactivate UnitTestImpl
+    return ret UnitTest instance pointer
+    UnitTest -> UnitTest -- : invoke impl()
+    return UnitTestImpl instance pointer
+    Test -> UnitTestImpl ++ #gold : invoke UnitTestImpl->AddTestInfo(set_up_tc, tear_down_tc, test_info)
+    UnitTestImpl -> UnitTestImpl ++ #Yellow: invoke AddTestInfo(...)
+    UnitTestImpl -> UnitTestImpl ++ : invoke GetTestSuite(...)
+    UnitTestImpl -> UnitTestImpl  : invoke std::find_if(...) by test_suite_name
+
+    alt#gold  #business found_exist
+        'UnitTestImpl -> UnitTestImpl  :  ret TestSuite*
+        return  ret TestSuite*
+    else #yellow no_found then create one
+        UnitTestImpl -> UnitTestImpl ++ : create TestSuite
+        UnitTestImpl -> TestSuite ++ : new TestSuite(...)
+        return ret TestSuite instance pointer
+        UnitTestImpl -> UnitTestImpl : IsDeathTestSuite?invoke UnitTestOptions::MatchesFilter(test_suite_name,kDeathTestSuiteFilter)
+        alt yes its death test suite
+            UnitTestImpl -> UnitTestImpl : ++last_death_test_suite_ and insert last index of test_suites
+        else no
+            UnitTestImpl -> UnitTestImpl : test_suites_.push_back(new_test_suite)
+        end
+        UnitTestImpl -> UnitTestImpl : test_suite_indices_.push_back(static_cast<int>(test_suite_indices_.size()))
+        return ret TestSuite instance pointer
+    end
+    UnitTestImpl -> TestSuite ++ : invoke TestSuite->AddTestInfo(test_info*)
+    return ret void
+    return ret void
+    return ret void
+    return ret TestInfo*
+    |||
+end
+|||
+
+@enduml

@@ -1,25 +1,26 @@
 @startuml
 'https://plantuml.com/sequence-diagram
 title
- <b>Static Init TestInfo by MakeAndRegisterTestInfo
+ <b><font size="24">Gtest 整体运行过程顺序图</font></b>
+
 end title
 
 'actor boundary control collections database entity queue
 'participant "SubClass of Test"  as Test  << (C,#add1b2) subclass >> order -2 #business
 participant "SubClass of Test"  as Test  order -2 #business
-participant "CodeLocation"
-participant "::testing::internal::GetTestTypeId()" as TypeId
-participant "SuiteApiResolver"
+participant "main()" as main
+participant "::testing::InitGoogleTest()" as init
+participant "RUN_ALL_TESTS()" as run_all_tests
 participant "TestFactoryImpl"
 participant "TestInfo"
 
 'autonumber start increment "<u>0|#.</u>"
 autonumber 1 1 "<b>."
 
-'activate participant #color
-activate Test #gold
+'activate participant #colouml_sequence_diagram.pumlr
+activate Test
 'participant -> participant ++|--|**|!! #color"
-Test -> Test ++ : invoke MakeAndRegisterTestInfo(...)
+Test -> Test  : invoke MakeAndRegisterTestInfo(...)
 
 /'
 group 主标题 [副标题]
@@ -44,9 +45,10 @@ group 主标题 [副标题]
     end
 end
 '/
-group init method parameters [init CodeLocation TypeId SetUpTestSuiteFunc TearDownTestSuiteFunc TestFactoryImpl]
-    Test ->  CodeLocation ++ : invoke CodeLocation(filename,line)
-    return ret codeLocation instance
+
+group InitGoogleTest []
+    ?-> main  ++ #gold : run main()
+    'return ret codeLocation instance
     Test -> TypeId ++ : invoke GetTestTypeId()
     return ret void* pointer
     Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetSetUpCaseOrSuite()
