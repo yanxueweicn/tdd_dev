@@ -10,6 +10,7 @@ end title
 participant "SubClass of Test"  as Test  order -2 #business
 participant "main()" as main
 participant "::testing::InitGoogleTest()" as init
+participant "internal::InitGoogleTestImpl()" as init_impl
 participant "RUN_ALL_TESTS()" as run_all_tests
 participant "TestFactoryImpl"
 participant "TestInfo"
@@ -46,17 +47,18 @@ group 主标题 [副标题]
 end
 '/
 
-group InitGoogleTest []
+group InitGoogleTest [ Init GTest ]
     ?-> main  ++ #gold : run main()
-    'return ret codeLocation instance
-    Test -> TypeId ++ : invoke GetTestTypeId()
-    return ret void* pointer
-    Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetSetUpCaseOrSuite()
-    return ret Test::SetUpTestSuite() pointer
-    Test -> SuiteApiResolver ++ : invoke SuiteApiResolver::GetTearDownCaseOrSuite()
-    return ret Test::TearDownTestSuite() pointer
-    Test -> TestFactoryImpl ++ : new TestFactoryImpl()
-    return ret TestFactoryBase instance pointer
+    main -> init ++ : invoke InitGoogleTest()
+    init -> init_impl ++ : invoke InitGoogleTestImpl() in gtest.cc
+    alt isInit()
+
+    else no
+
+    end
+    init_impl -> init_impl : invoke GTestIsInitialized()
+    return ret void
+    return ret void
 end
 |||
 group invoke methods
