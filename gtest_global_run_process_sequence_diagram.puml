@@ -83,21 +83,26 @@ group InitGoogleTest [ Init GTest ]
                     alt 如果是google参数
                         ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 打印帮助信息,remove_flag=true
                     else 如果是含有gtest参数的文件方式
-                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 打印帮助信息
-                    else 是否是帮助参数
-                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 打印帮助信息
+                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 设置gtest全名变量的值(::testing::FLAGS_gtest_flagfile)
+                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 从文件中加载gtests全局参数,removed=true
+                    else 如果是帮助参数
+                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : g_help_flag=true
+                    end
+
+                    alt remove_flag=true [is_remove_flag]
+                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 使用参数移动的方法来消除用户输入的gtest参数
+                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 参数减1，(*argc)--
                     end
                 return ret void
                 |||
             end
 
             alt g_help_flag [yes]
-                ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl ++ : 判断是否是打印帮助
-                    ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 打印帮助信息
+                ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl ++ : 屏幕打印帮助信息
                 return ret void
                 |||
             end
-        return ret void
+         return ret void
     return ret void
 
     init_impl -> init_impl ++ : GetUnitTestImpl()->PostFlagParsingInit()
