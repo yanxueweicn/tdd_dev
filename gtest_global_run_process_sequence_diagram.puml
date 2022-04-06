@@ -45,11 +45,14 @@ group 主标题 [副标题]
     end
 end
 '/
-
+== 运行其它方法 ==
 group InitGoogleTest [ Init GTest ]
     ?-> main  ++ #gold : run main()
+
     main -> main ++ : invoke InitGoogleTest()
-    main -> init_impl ++ : invoke InitGoogleTestImpl() in gtest.cc
+
+    main -> init_impl ++ #gold : invoke InitGoogleTestImpl() in gtest.cc
+
     init_impl -> init_impl ++ : invoke GTestIsInitialized()
     alt GTestIsInitialized [yes]
         return ret void
@@ -57,7 +60,7 @@ group InitGoogleTest [ Init GTest ]
     end
     |||
     init_impl -> init_impl ++ : 判断是否没有参数
-    alt *argc<=0 [yes]
+    alt *argc<=0
         return ret void
     end
     init_impl -> init_impl : g_argvs.clear()
@@ -84,20 +87,20 @@ group InitGoogleTest [ Init GTest ]
                         ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 打印帮助信息,remove_flag=true
                     else 如果是含有gtest参数的文件方式
                         ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 设置gtest全名变量的值(::testing::FLAGS_gtest_flagfile)
-                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 从文件中加载gtests全局参数,removed=true
+                        ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 从文件中加载gtests全局参数,remove_flag=true
                     else 如果是帮助参数
                         ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : g_help_flag=true
                     end
 
-                    alt remove_flag=true [is_remove_flag]
+                    alt remove_flag=true
                         ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 使用参数移动的方法来消除用户输入的gtest参数
                         ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl  : 参数减1，(*argc)--
                     end
                 return ret void
-                |||
+                ||10||
             end
 
-            alt g_help_flag [yes]
+            alt g_help_flag is true
                 ParseGoogleTestFlagsOnlyImpl -> ParseGoogleTestFlagsOnlyImpl ++ : 屏幕打印帮助信息
                 return ret void
                 |||
@@ -106,7 +109,24 @@ group InitGoogleTest [ Init GTest ]
     return ret void
 
     init_impl -> init_impl ++ : GetUnitTestImpl()->PostFlagParsingInit()
+        init_impl -> init_impl  : 获取UnitTestImpl全局变量
+
+        init_impl -> "UnitTestImpl::PostFlagParsingInit()" ++ #gold : invoke PostFlagParsingInit()
+
+            "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" ++ : run PostFlagParsingInit()
+                alt post_flag_parse_init_performed_=false 确认没有初始化
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 设置已经完成初始化，幂等处理
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 初始化死亡测试子进程控制信息
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 死亡测试禁止转发listener事件
+
+                end
+            return ret void
+
+        return ret void
+
     return ret void
+
+
     return ret void
     return ret void
     |||
