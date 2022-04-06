@@ -118,7 +118,11 @@ group InitGoogleTest [ Init GTest ]
                     "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 设置已经完成初始化，幂等处理
                     "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 初始化死亡测试子进程控制信息
                     "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 死亡测试禁止转发listener事件
-
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 注册泛型测试(即：test_suites,test_info
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 配置xml或json输出listener
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 配置默认listener
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 配置远程流输出listener
+                    "UnitTestImpl::PostFlagParsingInit()" -> "UnitTestImpl::PostFlagParsingInit()" : 如果有asbl则安装失败信号处理类
                 end
             return ret void
 
