@@ -19,12 +19,16 @@ add_executable(tdd_dev
         src/comm/simple_object_pool.h
         src/comm/template_meta_program.h
         src/service/service_sort_input.cc
-        
-        test/comm/comm_test.cc
-        test/comm/cplusplus_new_feature_test.cc
-        test/service/service_sort_input_test.cc
-        test/sample6_unittest.cc
+        ####
+        #test/comm/comm_test.cc
+        #test/comm/cplusplus_new_feature_test.cc
+        #test/service/service_sort_input_test.cc
         test/prime_tables.h
+        test/sample6_unittest.cc
+        test/sample7_unittest.cc
+        test/sample8_unittest.cc
+        test/sample9_unittest.cc
+        test/sample10_unittest.cc
         )
 
 
