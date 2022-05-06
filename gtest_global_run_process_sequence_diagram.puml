@@ -1,5 +1,6 @@
 @startuml
 'https://plantuml.com/sequence-diagram
+skin rose
 title
  <b><font size="24">Gtest 整体运行过程顺序图</font></b>
 

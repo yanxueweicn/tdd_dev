@@ -1,5 +1,9 @@
 @startuml
 'https://plantuml.com/sequence-diagram
+
+'skin rose
+skin rose
+'!theme superhero
 title
  <b>Static Init TestInfo by MakeAndRegisterTestInfo
 end title

@@ -1,6 +1,7 @@
 @startuml
 'https://plantuml.com/class-diagram
 
+skin rose
 title
 
 <b>Gtest整体核心类图
