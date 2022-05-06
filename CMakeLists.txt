@@ -24,11 +24,11 @@ add_executable(tdd_dev
         #test/comm/cplusplus_new_feature_test.cc
         #test/service/service_sort_input_test.cc
         test/prime_tables.h
-        test/sample6_unittest.cc
-        test/sample7_unittest.cc
-        test/sample8_unittest.cc
+        #test/sample6_unittest.cc
+        #test/sample7_unittest.cc
+        #test/sample8_unittest.cc
         test/sample9_unittest.cc
-        test/sample10_unittest.cc
+        #test/sample10_unittest.cc
         )
 
 

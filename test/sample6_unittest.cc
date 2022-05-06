@@ -32,7 +32,7 @@
 // implementations of the same interface (aka interface tests).
 
 // The interface and its implementations are in this header.
-#include "./prime_tables.h"
+#include "prime_tables.h"
 
 #include "gtest/gtest.h"
 
