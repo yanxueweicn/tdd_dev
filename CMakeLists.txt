@@ -11,6 +11,7 @@ include_directories(lib/third_ext/googletest/googlemock/include)
 
 include_directories(.)
 include_directories(src)
+include_directories(test)
 
 
 add_executable(tdd_dev
@@ -21,7 +22,7 @@ add_executable(tdd_dev
         src/service/service_sort_input.cc
         ####
         #test/comm/comm_test.cc
-        #test/comm/cplusplus_new_feature_test.cc
+        test/comm/cplusplus_new_feature_test.cc
         #test/service/service_sort_input_test.cc
         test/prime_tables.h
         #test/sample6_unittest.cc
