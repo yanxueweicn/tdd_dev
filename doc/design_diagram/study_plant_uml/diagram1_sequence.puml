@@ -1,0 +1,36 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+'!$BGCOLOR="white"
+
+'!theme materia
+' or !include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/materia/puml-theme-materia.puml
+
+'skin rose
+/'
+<style>
+    sequenceDiagram {
+        participant {
+            FontColor Black
+            LineColor red
+            BackGroundColor LightYellow
+        }
+    }
+
+</style>
+'/
+
+skinparam sequence {
+    participantBorderColor red
+    participantFontColor Black
+    participantFontSize 17
+}
+
+autonumber
+
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml

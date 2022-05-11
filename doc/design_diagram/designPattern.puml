@@ -1,6 +1,8 @@
 @startuml
 'https://plantuml.com/activity-diagram-beta
 skin rose
+
+
 start
 :ClickServlet.handleRequest();
 :new page;

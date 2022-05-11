@@ -1,4 +1,5 @@
 @startuml
+skin rose
 top to bottom direction
 [*] -> 接单
     接单 -> 处理中

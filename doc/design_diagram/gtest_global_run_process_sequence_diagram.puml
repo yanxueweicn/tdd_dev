@@ -2,7 +2,7 @@
 'https://plantuml.com/sequence-diagram
 skin rose
 title
- <b><font size="24">Gtest 整体运行过程顺序图</font></b>
+ <b><font size="24">Gtest整体运行过程顺序图</font></b>
 
 end title
 
@@ -46,7 +46,6 @@ group 主标题 [副标题]
     end
 end
 '/
-== 运行其它方法 ==
 group InitGoogleTest [ Init GTest ]
     ?-> main  ++ #gold : run main()
 
@@ -55,7 +54,7 @@ group InitGoogleTest [ Init GTest ]
     main -> init_impl ++ #gold : invoke InitGoogleTestImpl() in gtest.cc
 
     init_impl -> init_impl ++ : invoke GTestIsInitialized()
-    alt GTestIsInitialized [yes]
+    alt GTestIsInitialized (yes)
         return ret void
         |||
     end
