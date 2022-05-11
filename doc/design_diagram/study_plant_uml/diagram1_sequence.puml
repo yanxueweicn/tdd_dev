@@ -2,11 +2,10 @@
 'https://plantuml.com/sequence-diagram
 
 '!$BGCOLOR="white"
-
 '!theme materia
 ' or !include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/materia/puml-theme-materia.puml
 
-'skin rose
+skin rose
 /'
 <style>
     sequenceDiagram {
@@ -16,21 +15,37 @@
             BackGroundColor LightYellow
         }
     }
-
 </style>
-'/
 
+skinparam backGroundColor white
+skinparam handwritten true
+skinparam roundCorner 10
 skinparam sequence {
+    participantBorderThickness 2
     participantBorderColor red
+    participantBackgroundColor business
     participantFontColor Black
     participantFontSize 17
+
+    lifeLineBorderColor red
+    lifeLineBackgroundColor white
+
+    arrowColor red
 }
+'/
 
-autonumber
+'autonumber start step "<b><color:red>0|#."
+autonumber 1 1 "<b><color:blue>."
+|||
+group 测试 [继续]
+    activate Alice #gold
 
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
+    Alice -> Bob ++ : Authentication Request
+    Alice <-- Bob -- : Authentication Response
 
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
+    Alice -> Bob: Another authentication Request
+    return another authentication Response
+end
+|||
+
 @enduml

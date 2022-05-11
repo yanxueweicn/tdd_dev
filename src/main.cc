@@ -1,6 +1,6 @@
-#include <iostream>
 #include "comm/comm.h"
 #include "service/service_sort_input.h"
+#include <iostream>
 
 #include <gtest/gtest.h>
 
