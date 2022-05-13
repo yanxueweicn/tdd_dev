@@ -34,18 +34,66 @@ skinparam sequence {
 }
 '/
 
+title
+    <color:blue><font size=20>**RPC测试**</font>
+    //Demo//--这是--一个~~one sample~~__示例__
+end title
+
 'autonumber start step "<b><color:red>0|#."
-autonumber 1 1 "<b><color:blue>."
-|||
-group 测试 [继续]
-    activate Alice #gold
+autonumber 1 1 "<b><color:red>."
 
-    Alice -> Bob ++ : Authentication Request
-    Alice <-- Bob -- : Authentication Response
-
-    Alice -> Bob: Another authentication Request
-    return another authentication Response
-end
+box 登陆Svr #whiteSmoke
 |||
+    'actor boundary control collections database entity queue
+    participant "ChromeBrowser" as Browse
+    participant "ClientUser" as Client << (C,#add1b2) Class >> order 1 #business
+    participant "Serer" as Server << (I,#add1b2) Interface >> order 2 #gold
+    participant "Database" as Database order 3
+
+    hnote over Browse,Client
+        前置条件
+    end note
+
+    [-> Browse : 用户打开浏览器
+
+    'alt/else,loop,break,opt
+    group 登陆逻辑 [用户登陆]
+        activate Client #business
+
+            Client -[#red]> Server ++ #gold : Login Request
+            note  over Server: show progress
+            hnote  over Server: show tips
+            / rnote over Client : show help
+            Client <-- Server -- : Login Response
+
+            ==service logic==
+            Client -[#blue]>> Server ++ : Query Request
+            ... 5 seconds later ...
+            return Query Response
+
+            ||40||
+            alt#business #gold 查询结果成功
+                Client -> Client : show succ info
+            else #orange 网络超时
+                loop#business #darkOrange retry twice
+                    Client -> Client : retry opers
+                    break#business #orange 如果=2次
+                        Client -> Client : break
+                    end
+                end
+            else #orangeRed 失败
+                Client -> Client : show error msg
+            end
+
+        deactivate Client
+    |||
+    end
+
+    Server -> Database : read date
+    return ret date
+
+    Browse <-? : 结束
+|||
+end box
 
 @enduml
