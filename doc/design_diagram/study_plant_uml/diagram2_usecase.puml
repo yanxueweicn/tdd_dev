@@ -1,25 +1,31 @@
 @startuml
-'https://plantuml.com/use-case-diagram
-'skin rose
-!$BGCOLOR="white"
-!include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/materia/puml-theme-materia.puml
+skin rose
+'skinparam actorStyle awesome|Hollow
 
-:Main Admin: as Admin
-(Use the application) as (Use)
+'default direction
+' top to bottom direction
+left to right direction
 
-User -> (Start)
-User --> (Use)
+actor "终端用户" as User << Human >> #pink;line:darkred;line.bold;text:red
 
-Admin ---> (Use)
+rectangle 登陆逻辑 {
+    actor "后台管理员" as Admin
 
-note right of Admin : This is an example.
+    usecase "登陆" as Login #orange;line:red;line.bold;text:red
+    note bottom: 注意安全方式
+    usecase "查询密码" as Query
+    note top : RPC调用
 
-note right of (Use)
-A note can also
-be on several lines
-end note
+    usecase "获取个人信息" as GetInfo
+    usecase "操作数据库" as Database
+    GetInfo ..> Database #blue;line.dashed;text:blue : <<include>>
+    usecase "读写内存" as CacheMemery
+    GetInfo ..> CacheMemery : <<include>>
+}
 
-note "This note is connected\nto several objects." as N2
-(Start) .. N2
-N2 .. (Use)
+User --> Login : 使用浏览器
+User --> Query : 校验
+User --> GetInfo #green;text:green : 显示
+
+Admin -u-> Login
 @enduml
