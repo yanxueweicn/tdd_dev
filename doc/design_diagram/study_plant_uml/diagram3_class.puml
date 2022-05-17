@@ -1,29 +1,36 @@
 @startuml
 'https://plantuml.com/use-case-diagram
-'skin rose
-!$BGCOLOR="white"
-!include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/materia/puml-theme-materia.puml
+skin rose
 
-abstract class AbstractList
+title
+    <b><font size=17>整体类图</font></b>
+end title
+
+interface ios_base
+
+
+
+
 abstract AbstractCollection
 interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
+abstract class AbstractList
 class ArrayList {
-Object[] elementData
-size()
+    Object[] elementData
+    size()
 }
 
 enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+    DAYS
+    HOURS
+    MINUTES
 }
+
+Collection <|-- AbstractCollection
+Collection <|-- List
+List <|-- AbstractList
+
+AbstractCollection <|- AbstractList
+AbstractList <|-- ArrayList
+
+
 @enduml
