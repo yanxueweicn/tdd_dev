@@ -9,9 +9,8 @@ end title
 skinparam packageStyle rectangle
 
 package ios {
-    abstract class ios_base
-    abstract class basic_ios extends ios_base
     class ios_base
+    class basic_ios extends ios_base
     class basic_streambuf
 }
 
