@@ -6,122 +6,148 @@ title
     <b><font size=17>整体类图</font></b>
 end title
 
-abstract class ios_base
-{
-    ~ ios_base() throw ();
-    + ios_base(const ios_base&) = delete;
-    + ios_base& ios_base(const ios_base&) = delete;
-    + virtual ~ios_base();
+skinparam packageStyle rectangle
 
-    + static bool sync_with_stdio(bool __sync = true);
-    + fmtflags flags(fmtflags __fmtfl);
-    + fmtflags setf(fmtflags __fmtfl);
-    + streamsize width() const;
-    + streamsize precision() const;
-    + streamsize precision(streamsize __prec) const;
-    ==members==
-    + static const fmtflags boolalpha =   _S_boolalpha;
-    + static const fmtflags dec =         _S_dec;
-    + static const fmtflags fixed =       _S_fixed;
-    + static const fmtflags hex =         _S_hex;
-    + static const fmtflags internal =    _S_internal;
-    + static const fmtflags left =        _S_left;
-    + static const fmtflags oct =         _S_oct;
-    + static const fmtflags right =       _S_right;
-    + static const fmtflags scientific =  _S_scientific;
-    + static const fmtflags showbase =    _S_showbase;
-    + static const fmtflags showpoint =   _S_showpoint;
-    + static const fmtflags showpos =     _S_showpos;
-    + static const fmtflags skipws =      _S_skipws;
-    + static const fmtflags unitbuf =     _S_unitbuf;
-    + static const fmtflags uppercase =   _S_uppercase;
-    + static const fmtflags adjustfield = _S_adjustfield;
-    + static const fmtflags basefield =   _S_basefield;
-    + static const fmtflags floatfield =  _S_floatfield;
+package ios {
+    abstract class ios_base
+    {
+        ~ ios_base() throw ();
+        + ios_base(const ios_base&) = delete;
+        + ios_base& ios_base(const ios_base&) = delete;
+        + virtual ~ios_base();
 
-    + static const iostate badbit =	_S_badbit;
-    + static const iostate eofbit =	_S_eofbit;
-    + static const iostate failbit =	_S_failbit;
-    + static const iostate goodbit =	_S_goodbit;
+        + static bool sync_with_stdio(bool __sync = true);
+        + fmtflags flags(fmtflags __fmtfl);
+        + fmtflags setf(fmtflags __fmtfl);
+        + streamsize width() const;
+        + streamsize precision() const;
+        + streamsize precision(streamsize __prec) const;
+        ==members==
+        + static const fmtflags boolalpha =   _S_boolalpha;
+        + static const fmtflags dec =         _S_dec;
+        + static const fmtflags fixed =       _S_fixed;
+        + static const fmtflags hex =         _S_hex;
+        + static const fmtflags internal =    _S_internal;
+        + static const fmtflags left =        _S_left;
+        + static const fmtflags oct =         _S_oct;
+        + static const fmtflags right =       _S_right;
+        + static const fmtflags scientific =  _S_scientific;
+        + static const fmtflags showbase =    _S_showbase;
+        + static const fmtflags showpoint =   _S_showpoint;
+        + static const fmtflags showpos =     _S_showpos;
+        + static const fmtflags skipws =      _S_skipws;
+        + static const fmtflags unitbuf =     _S_unitbuf;
+        + static const fmtflags uppercase =   _S_uppercase;
+        + static const fmtflags adjustfield = _S_adjustfield;
+        + static const fmtflags basefield =   _S_basefield;
+        + static const fmtflags floatfield =  _S_floatfield;
 
-    + static const openmode app =		_S_app;
-    + static const openmode ate =		_S_ate;
-    + static const openmode binary =	_S_bin;
-    + static const openmode in =		_S_in;
-    + static const openmode out =		_S_out;
-    + static const openmode trunc =	_S_trunc;
+        + static const iostate badbit =	_S_badbit;
+        + static const iostate eofbit =	_S_eofbit;
+        + static const iostate failbit =	_S_failbit;
+        + static const iostate goodbit =	_S_goodbit;
 
-    + static const seekdir beg =		_S_beg;
-    + static const seekdir cur =		_S_cur;
-    + static const seekdir end =		_S_end;
+        + static const openmode app =		_S_app;
+        + static const openmode ate =		_S_ate;
+        + static const openmode binary =	_S_bin;
+        + static const openmode in =		_S_in;
+        + static const openmode out =		_S_out;
+        + static const openmode trunc =	_S_trunc;
+
+        + static const seekdir beg =		_S_beg;
+        + static const seekdir cur =		_S_cur;
+        + static const seekdir end =		_S_end;
+    }
+
+    abstract class basic_ios << typename _CharT, typename _Traits >> extends ios_base {
+        ~ basic_ios();
+        + explicit basic_ios(basic_streambuf<_CharT, _Traits>* __sb);
+        ~ basic_ios(const basic_ios&) = delete;
+        ~ basic_ios& operator=(const basic_ios&) = delete;
+
+        + iostate exceptions() const
+        + void exceptions(iostate __except)
+
+        + explicit operator bool() const
+        + bool operator!() const
+
+        + void clear(iostate __state = goodbit);
+        + void setstate(iostate __state)
+        + iostate rdstate() const
+        + bool good() const
+        + bool bad() const
+        + bool fail() const
+        + bool eof() const
+
+        + basic_ios& copyfmt(const basic_ios& __rhs);
+        + char_type widen(char __c) const
+        + char narrow(char_type __c, char __default) const
+        + char_type fill() const
+        + char_type fill(char_type __ch)
+
+        + void clear(iostate __state = goodbit);
+        + basic_streambuf<_CharT, _Traits>* rdbuf() const
+        + basic_streambuf<_CharT, _Traits>* rdbuf(basic_streambuf<_CharT, _Traits>* __sb);
+        + basic_ostream<_CharT, _Traits>* tie() const
+        + basic_ostream<_CharT, _Traits>* tie(basic_ostream<_CharT, _Traits>* __tiestr)
+        ==members==
+        + typedef _CharT char_type;
+        + typedef typename _Traits::int_type int_type;
+        + typedef typename _Traits::pos_type pos_type;
+        + typedef typename _Traits::off_type off_type;
+        + typedef _Traits traits_type;
+    }
+    class ios_base
+    class basic_streambuf
 }
 
-abstract class basic_ios << typename _CharT, typename _Traits >> {
-    ~ basic_ios();
-    + explicit basic_ios(basic_streambuf<_CharT, _Traits>* __sb);
-    ~ basic_ios(const basic_ios&) = delete;
-    ~ basic_ios& operator=(const basic_ios&) = delete;
-
-    + iostate exceptions() const
-    + void exceptions(iostate __except)
-
-    + explicit operator bool() const
-    + bool operator!() const
-
-    + void clear(iostate __state = goodbit);
-    + void setstate(iostate __state)
-    + iostate rdstate() const
-    + bool good() const
-    + bool bad() const
-    + bool fail() const
-    + bool eof() const
-
-    + basic_ios& copyfmt(const basic_ios& __rhs);
-    + char_type widen(char __c) const
-    + char narrow(char_type __c, char __default) const
-    + char_type fill() const
-    + char_type fill(char_type __ch)
-
-    + void clear(iostate __state = goodbit);
-    + basic_streambuf<_CharT, _Traits>* rdbuf() const
-    + basic_streambuf<_CharT, _Traits>* rdbuf(basic_streambuf<_CharT, _Traits>* __sb);
-    + basic_ostream<_CharT, _Traits>* tie() const
-    + basic_ostream<_CharT, _Traits>* tie(basic_ostream<_CharT, _Traits>* __tiestr)
-    ==members==
-    + typedef _CharT char_type;
-    + typedef typename _Traits::int_type int_type;
-    + typedef typename _Traits::pos_type pos_type;
-    + typedef typename _Traits::off_type off_type;
-    + typedef _Traits traits_type;
-}
-
-class basic_ostream extends basic_ios
 class basic_istream extends basic_ios
+class basic_ostream extends basic_ios
+
+class basic_ifstream extends basic_istream
+class basic_istringstream extends basic_istream
+class basic_ofstream extends basic_ostream
+class basic_ostringstream extends basic_ostream
 class basic_iostream extends basic_istream,basic_ostream
 
-ios_base <|-- basic_ios
+class basic_fstream extends basic_iostream
+class basic_stringstream extends basic_iostream
 
+class basic_filebuf extends basic_streambuf
+class basic_stringbuf extends basic_streambuf
 
-abstract AbstractCollection
-interface List
-abstract class AbstractList
-class ArrayList {
-    Object[] elementData
-    size()
+''
+package ios {
+    class ios extends ios_base
 }
 
-enum TimeUnit {
-    DAYS
-    HOURS
-    MINUTES
+package ostream {
+    class ostream extends ios
+}
+package istream {
+    class istream extends ios
+}
+    class iostream extends istream,ostream
+
+
+package streambuf {
+    class streambuf
+}
+package fstream {
+    class ifstream extends istream
+    class ofstream extends ostream
+    class fstream extends iostream
+    class filebuf extends streambuf
 }
 
-Collection <|-- AbstractCollection
-Collection <|-- List
-List <|-- AbstractList
+package sstream {
+    class istringstream extends istream
+    class ostringstream extends ostream
+    class stringstream extends iostream
+    class stringbuf extends streambuf
+}
 
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
+
 
 
 @enduml
