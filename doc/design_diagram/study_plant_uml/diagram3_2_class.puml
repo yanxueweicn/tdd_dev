@@ -1,19 +1,28 @@
 @startuml
-'https://plantuml.com/use-case-diagram
 skin rose
+skinparam packageStyle rectangle
 
 title
     <b><font size=17>整体IO库类图</font></b>
 end title
 
-skinparam packageStyle rectangle
+package ios #whiteSmoke {
+    enum iostate
+    enum fmtflags
+    class ios_base <<typename _CharT,typename _Traits>> {
+        # ios_base() throw ();
+        + virtual ~ios_base();
+        ==members==
+        # iostate _M_exception;
+    }
+    note top of ios_base : 所有父类
 
-package ios {
-    class ios_base
     class basic_ios extends ios_base
-    class basic_streambuf
+    class ios extends ios_base
+    class basic_streambuf #aliceblue;line:blue;line.dotted;text:blue
 }
-
+ios_base *- "2" iostate : include >
+ios_base *- "1" fmtflags #line:red;line.bold;text:red : >
 class basic_istream extends basic_ios
 class basic_ostream extends basic_ios
 
@@ -25,14 +34,8 @@ class basic_iostream extends basic_istream,basic_ostream
 
 class basic_fstream extends basic_iostream
 class basic_stringstream extends basic_iostream
-
 class basic_filebuf extends basic_streambuf
 class basic_stringbuf extends basic_streambuf
-
-''
-package ios {
-    class ios extends ios_base
-}
 
 package ostream {
     class ostream extends ios
@@ -41,7 +44,6 @@ package istream {
     class istream extends ios
     class iostream extends istream,ostream
 }
-
 package streambuf {
     class streambuf
 }
@@ -51,15 +53,11 @@ package fstream {
     class fstream extends iostream
     class filebuf extends streambuf
 }
-
 package sstream {
     class istringstream extends istream
     class ostringstream extends ostream
     class stringstream extends iostream
     class stringbuf extends streambuf
 }
-
-
-
-
 @enduml
+
