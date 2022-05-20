@@ -3,13 +3,13 @@ skin rose
 skinparam packageStyle rectangle
 
 title
-    <b><font size=17>整体IO库类图</font></b>
+    <b><font size=17>C++ 整体IO库类图</font></b>
 end title
 
-package ios #whiteSmoke {
+package <ios> #whiteSmoke {
     enum iostate
     enum fmtflags
-    class ios_base <<typename _CharT,typename _Traits>> {
+    class ios_base <typename _CharT,typename _Traits> {
         # ios_base() throw ();
         + virtual ~ios_base();
         ==members==
@@ -22,7 +22,7 @@ package ios #whiteSmoke {
     class basic_streambuf #aliceblue;line:blue;line.dotted;text:blue
 }
 ios_base *- "2" iostate : include >
-ios_base *- "1" fmtflags #line:red;line.bold;text:red : >
+ios_base *-u "1" fmtflags #line:red;line.bold;text:red : >
 class basic_istream extends basic_ios
 class basic_ostream extends basic_ios
 
@@ -37,27 +37,32 @@ class basic_stringstream extends basic_iostream
 class basic_filebuf extends basic_streambuf
 class basic_stringbuf extends basic_streambuf
 
-package ostream {
+package <ostream> {
     class ostream extends ios
 }
-package istream {
+package <istream> {
     class istream extends ios
     class iostream extends istream,ostream
 }
-package streambuf {
+package <streambuf> {
     class streambuf
 }
-package fstream {
+package <fstream> {
     class ifstream extends istream
     class ofstream extends ostream
     class fstream extends iostream
     class filebuf extends streambuf
 }
-package sstream {
+package <sstream> {
     class istringstream extends istream
     class ostringstream extends ostream
     class stringstream extends iostream
     class stringbuf extends streambuf
 }
+package <iostream> {
+    class cin
+    class cout
+    class cerr
+    class clog
+}
 @enduml
-
