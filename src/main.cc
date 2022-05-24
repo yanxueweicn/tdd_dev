@@ -1,5 +1,5 @@
-#include "comm/comm.h"
-#include "service/service_sort_input.h"
+#include "s1_comm/comm.h"
+#include "s2_logic_service/service_sort_input.h"
 #include <iostream>
 
 #include <gtest/gtest.h>

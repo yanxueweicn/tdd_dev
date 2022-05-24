@@ -6,6 +6,7 @@
 #define TDD_DEMO_TEMPLATE_META_PROGRAM_H
 
 #include <type_traits>
+#include <string>
 
 template<typename T, T value, template<typename> class A, typename... Args>
 class TmpDemo {

@@ -1,9 +1,8 @@
 @startuml
 'https://plantuml.com/activity-diagram-beta
-!$BGCOLOR="white"
-!include https://raw.githubusercontent.com/bschwarz/puml-themes/master/themes/materia/puml-theme-materia.puml
 
-'skin rose
+skin rose
+
 start
 :ClickServlet.handleRequest();
 :new page;

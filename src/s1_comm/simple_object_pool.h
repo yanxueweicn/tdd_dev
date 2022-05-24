@@ -6,6 +6,7 @@
 #define TDD_DEV_SIMPLE_OBJECT_POOL_H
 
 #include <vector>
+#include <string>
 
 template<typename T>
 class SimpleObjectPool {

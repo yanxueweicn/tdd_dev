@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.15)
 project(tdd_dev)
 
 set(CMAKE_CXX_STANDARD 11)
@@ -16,21 +16,21 @@ include_directories(test)
 
 add_executable(tdd_dev
         src/main.cc
-        src/comm/comm.cc
-        src/comm/simple_object_pool.h
-        src/comm/template_meta_program.h
-        src/service/service_sort_input.cc
+        src/s1_comm/comm.cc
+        src/s1_comm/simple_object_pool.h
+        src/s1_comm/template_meta_program.h
+        src/s2_logic_service/service_sort_input.cc
         ####
-        #test/comm/comm_test.cc
-        #test/comm/cplusplus_new_feature_test.cc
-        #test/service/service_sort_input_test.cc
+        #test/s1_comm/comm_test.cc
+        #test/s1_comm/cplusplus_new_feature_test.cc
+        #test/s2_logic_service/service_sort_input_test.cc
         test/prime_tables.h
         #test/sample6_unittest.cc
         test/sample7_unittest.cc
         #test/sample8_unittest.cc
         #test/sample9_unittest.cc
         #test/sample10_unittest.cc
-        )
+        src/s2_logic_design_pattern/s1_design_pattern_create/builder_interface.h)
 
 
 target_link_libraries(tdd_dev gtest_main gmock)
