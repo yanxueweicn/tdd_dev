@@ -1,27 +1,53 @@
 @startuml
-'https://plantuml.com/class-diagram
+skin rose
 
-abstract class AbstractList
-abstract AbstractCollection
-interface List
-interface Collection
-
-List <|-- AbstractList
-Collection <|-- AbstractCollection
-
-Collection <|- List
-AbstractCollection <|- AbstractList
-AbstractList <|-- ArrayList
-
-class ArrayList {
-Object[] elementData
-size()
+interface Computer {
+    void InitSetup();
+    void SetupGame();
+    void GameStart();
 }
-
-enum TimeUnit {
-DAYS
-HOURS
-MINUTES
+interface Builder {
+    void MakeCpu();
+    void MakeMemory();
+    void MakeHardDisk();
+    void MakeDisplay();
+    void MakeKeyboard();
+    Computer GetResult();
 }
+Builder -u-> "1" Computer
+
+class LenovoBuilder implements Builder
+class DellBuilder implements Builder
+class Director {
+    Computer Construct();
+}
+Director -r-> "1" Builder
+Director -u-> "1" Computer
+
+interface Cpu
+class Intel implements Cpu
+class Amd implements Cpu
+
+interface Memory
+class Samsung implements Memory
+class Kingston implements Memory
+
+interface HardDisk
+class WesternDatabase implements HardDisk
+class Seagate implements HardDisk
+
+interface Display
+class Samsung implements Display
+class Philips implements Display
+
+interface Keyboard
+class Lenovo implements Keyboard
+class Logitech implements Keyboard
+
+LenovoBuilder --> "1" Cpu
+LenovoBuilder --> "1" Memory
+LenovoBuilder --> "1" HardDisk
+LenovoBuilder --> "1" Display
+LenovoBuilder --> "1" Keyboard
 
 @enduml

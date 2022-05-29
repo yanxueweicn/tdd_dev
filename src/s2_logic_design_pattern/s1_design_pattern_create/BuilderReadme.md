@@ -20,9 +20,23 @@
 
 ```
 // 用户使用联想
-std::unique_ptr<BuilderInterface> builder(new LenonBuilder());
+Cpu cpu=new CpuIntell();
+Memory memory= new MemorySumsung();
+HardDisk hard_disk=new HardDiskWesternData();
+Display display=new DisplaySumsung();
+Keyboard keyboard=new KeyboardLenvov();
+
+std::unique_ptr<BuilderInterface> builder(new LenovoBuilder());
+
+
 Director director(builder);
-Computer computer=director.Construt();
+Computer computer=director.Construt(){
+    builder.MakeCpu();
+    builder.MakeMemory();
+    builder.MakeHardDisk();
+    builder.MakeDisplay();
+    builder.MakeKeyboard();
+};
 computer.InitSetup();
 computer.SetupGame();
 computer.GameStart();
@@ -38,7 +52,18 @@ computer.GameStart();
 
 ## 3.1、正常的
 
+```
+EXPECT_STREQ(builder.to_string().c_str(),"LenovoBuilder{cpu=intel,memory=sumsung,hard_disk=western_data,display=sumsung,keyboard=lenovo}")
+EXPECT_STREQ(builder.to_string().c_str(),"DellBuilder{cpu=amd,memory=kingstone,hard_disk=seagate,display=philips,keyboard=logitech}")
+
+```
+
 ## 3.2、不正常的
+
+```
+#、有不支持的配件 unknown
+EXPECT_TRUE(builder.to_string().find("unknown")!=std::string::npos)
+```
 
 ### 3.2.1、值类型不对
 
