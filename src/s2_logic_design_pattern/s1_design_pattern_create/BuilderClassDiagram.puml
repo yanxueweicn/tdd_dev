@@ -50,4 +50,10 @@ LenovoBuilder --> "1" HardDisk
 LenovoBuilder --> "1" Display
 LenovoBuilder --> "1" Keyboard
 
+DellBuilder --> "1" Cpu
+DellBuilder --> "1" Memory
+DellBuilder --> "1" HardDisk
+DellBuilder --> "1" Display
+DellBuilder --> "1" Keyboard
+
 @enduml
