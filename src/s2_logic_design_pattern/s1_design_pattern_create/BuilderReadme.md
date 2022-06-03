@@ -26,7 +26,7 @@ HardDisk hard_disk=new HardDiskWesternData();
 Display display=new DisplaySumsung();
 Keyboard keyboard=new KeyboardLenvov();
 
-std::unique_ptr<BuilderInterface> builder(new LenovoBuilder());
+std::unique_ptr<Builder> builder(new LenovoBuilder());
 
 
 Director director(builder);
@@ -53,8 +53,10 @@ computer.GameStart();
 ## 3.1、正常的
 
 ```
-EXPECT_STREQ(builder.to_string().c_str(),"LenovoBuilder{cpu=intel,memory=sumsung,hard_disk=western_data,display=sumsung,keyboard=lenovo}")
-EXPECT_STREQ(builder.to_string().c_str(),"DellBuilder{cpu=amd,memory=kingstone,hard_disk=seagate,display=philips,keyboard=logitech}")
+EXPECT_STREQ(builder.to_string().c_str(),
+    "LenovoBuilder{cpu=intel,memory=sumsung,hard_disk=western_data,display=sumsung,keyboard=lenovo}")
+EXPECT_STREQ(builder.to_string().c_str(),
+    "DellBuilder{cpu=amd,memory=kingstone,hard_disk=seagate,display=philips,keyboard=logitech}")
 
 ```
 

@@ -30,7 +30,7 @@ add_executable(tdd_dev
         #test/sample8_unittest.cc
         #test/sample9_unittest.cc
         #test/sample10_unittest.cc
-        src/s2_logic_design_pattern/s1_design_pattern_create/builder_interface.h)
+        test/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern_test.cc src/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern.cc src/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern.h)
 
 
 target_link_libraries(tdd_dev gtest_main gmock)

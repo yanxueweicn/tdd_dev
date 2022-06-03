@@ -12,6 +12,7 @@ interface Builder {
     void MakeHardDisk();
     void MakeDisplay();
     void MakeKeyboard();
+    std::string to_string();
     Computer GetResult();
 }
 Builder -u-> "1" Computer
