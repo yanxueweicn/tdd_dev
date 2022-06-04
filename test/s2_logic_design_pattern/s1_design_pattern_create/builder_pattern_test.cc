@@ -14,12 +14,32 @@ void ComputerSetup(Computer &computer) {
 } // namespace
 
 TEST(BuilderPattern, Normal) {
+  // LenovoBuilder
   std::unique_ptr<Builder> builder(new LenovoBuilder());
-  Director director(*builder.get());
-  Computer computer = director.Construct();
-  ComputerSetup(computer);
-
   EXPECT_STREQ(builder->to_string().c_str(),
-               "LenovoBuilder{cpu=intel,memory=sumsung,hard_disk=western_data,"
-               "display=sumsung,keyboard=lenovo}");
+               "LenovoBuilder{make_order_desc=|parts={cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}}");
+  Director director(*builder);
+  Computer *computer_ptr = director.Construct();
+  if (computer_ptr)
+    ComputerSetup(*computer_ptr);
+  EXPECT_STREQ(builder->to_string().c_str(),
+               "LenovoBuilder{make_order_desc=cpu->memory->hard_disk->keyboard->display|parts={cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}}");
+
+
+  // DellBuilder
+//  std::unique_ptr<Builder> builder2(new DellBuilder());
+//  Director director2(*builder2);
+//  Computer *computer_ptr2 = director2.Construct();
+//  if (computer_ptr2)
+//    ComputerSetup(*computer_ptr2);
+//  EXPECT_STREQ(builder2->to_string().c_str(),
+//               "DellBuilder{cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}");
+
+  builder.reset(new DellBuilder());
+  Director director2(*builder);
+  Computer *computer_ptr2 = director2.Construct();
+  if (computer_ptr2)
+    ComputerSetup(*computer_ptr2);
+  EXPECT_STREQ(builder->to_string().c_str(),
+               "DellBuilder{make_order_desc=cpu->memory->hard_disk->keyboard->display|parts={cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}}");
 }

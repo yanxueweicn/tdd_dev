@@ -1,49 +1,50 @@
 @startuml
 skin rose
 
-interface Computer {
+abstract class Computer {
     void InitSetup();
     void SetupGame();
     void GameStart();
 }
-interface Builder {
-    void MakeCpu();
-    void MakeMemory();
-    void MakeHardDisk();
-    void MakeDisplay();
-    void MakeKeyboard();
-    std::string to_string();
-    Computer GetResult();
+abstract class Builder {
+    virtual void MakeCpu();
+    virtual void MakeMemory();
+    virtual void MakeHardDisk();
+    virtual void MakeDisplay();
+    virtual void MakeKeyboard();
+    virtual Computer* GetResult();
+    virtual std::string to_string();
+    virtual void MakeOrderDesc(const std::string &desc);
 }
 Builder -u-> "1" Computer
 
-class LenovoBuilder implements Builder
-class DellBuilder implements Builder
+class LenovoBuilder extends Builder
+class DellBuilder extends Builder
 class Director {
     Computer Construct();
 }
 Director -r-> "1" Builder
 Director -u-> "1" Computer
 
-interface Cpu
-class Intel implements Cpu
-class Amd implements Cpu
+abstract class Cpu
+class Intel extends Cpu
+class Amd extends Cpu
 
-interface Memory
-class Samsung implements Memory
-class Kingston implements Memory
+abstract class Memory
+class Samsung extends Memory
+class Kingston extends Memory
 
-interface HardDisk
-class WesternDatabase implements HardDisk
-class Seagate implements HardDisk
+abstract class HardDisk
+class WesternDatabase extends HardDisk
+class Seagate extends HardDisk
 
-interface Display
-class Samsung implements Display
-class Philips implements Display
+abstract class Display
+class Samsung extends Display
+class Philips extends Display
 
-interface Keyboard
-class Lenovo implements Keyboard
-class Logitech implements Keyboard
+abstract class Keyboard
+class Lenovo extends Keyboard
+class Logitech extends Keyboard
 
 LenovoBuilder --> "1" Cpu
 LenovoBuilder --> "1" Memory

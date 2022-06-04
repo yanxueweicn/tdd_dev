@@ -54,9 +54,9 @@ computer.GameStart();
 
 ```
 EXPECT_STREQ(builder.to_string().c_str(),
-    "LenovoBuilder{cpu=intel,memory=sumsung,hard_disk=western_data,display=sumsung,keyboard=lenovo}")
+    "LenovoBuilder{cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}")
 EXPECT_STREQ(builder.to_string().c_str(),
-    "DellBuilder{cpu=amd,memory=kingstone,hard_disk=seagate,display=philips,keyboard=logitech}")
+    "DellBuilder{cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}")
 
 ```
 
