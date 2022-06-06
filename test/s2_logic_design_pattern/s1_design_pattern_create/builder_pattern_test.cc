@@ -27,19 +27,11 @@ TEST(BuilderPattern, Normal) {
 
 
   // DellBuilder
-//  std::unique_ptr<Builder> builder2(new DellBuilder());
-//  Director director2(*builder2);
-//  Computer *computer_ptr2 = director2.Construct();
-//  if (computer_ptr2)
-//    ComputerSetup(*computer_ptr2);
-//  EXPECT_STREQ(builder2->to_string().c_str(),
-//               "DellBuilder{cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}");
-
   builder.reset(new DellBuilder());
   Director director2(*builder);
-  Computer *computer_ptr2 = director2.Construct();
-  if (computer_ptr2)
-    ComputerSetup(*computer_ptr2);
+  computer_ptr = director2.ConstructStrong();
+  if (computer_ptr)
+    ComputerSetup(*computer_ptr);
   EXPECT_STREQ(builder->to_string().c_str(),
-               "DellBuilder{make_order_desc=cpu->memory->hard_disk->keyboard->display|parts={cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}}");
+               "DellBuilder{make_order_desc=2cpu->memory->2hard_disk->2display->keyboard|parts={cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}}");
 }

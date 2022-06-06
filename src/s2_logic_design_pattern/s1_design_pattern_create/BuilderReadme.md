@@ -20,34 +20,16 @@
 
 ```
 // 用户使用联想
-Cpu cpu=new CpuIntell();
-Memory memory= new MemorySumsung();
-HardDisk hard_disk=new HardDiskWesternData();
-Display display=new DisplaySumsung();
-Keyboard keyboard=new KeyboardLenvov();
-
 std::unique_ptr<Builder> builder(new LenovoBuilder());
-
-
 Director director(builder);
-Computer computer=director.Construt(){
-    builder.MakeCpu();
-    builder.MakeMemory();
-    builder.MakeHardDisk();
-    builder.MakeDisplay();
-    builder.MakeKeyboard();
-};
-computer.InitSetup();
-computer.SetupGame();
-computer.GameStart();
+Computer* computer_ptr=director.Construt();
+ComputerSetup(*computer_ptr);
 
 // 另外一个用户使用dell
 builder.reset(new DellBuilder());
 Director director2(builder);
-computer=director2.Construt();
-computer.InitSetup();
-computer.SetupGame();
-computer.GameStart();
+computer_ptr=director2.ConstrutStrong();
+ComputerSetup(*computer_ptr);
 ```
 
 ## 3.1、正常的
