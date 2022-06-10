@@ -21,13 +21,13 @@
 ```
 // 用户使用联想
 std::unique_ptr<Builder> builder(new LenovoBuilder());
-Director director(builder);
+Director director(*builder);
 Computer* computer_ptr=director.Construt();
 ComputerSetup(*computer_ptr);
 
 // 另外一个用户使用dell
 builder.reset(new DellBuilder());
-Director director2(builder);
+Director director2(*builder);
 computer_ptr=director2.ConstrutStrong();
 ComputerSetup(*computer_ptr);
 ```

@@ -8,6 +8,11 @@
 #include <memory>
 #include <string>
 
+class Cpu;
+class Memory;
+class HardDisk;
+class Display;
+class Keyboard;
 class Computer {
  public:
   void InitSetup();
@@ -15,6 +20,32 @@ class Computer {
   void SetupGame();
 
   void GameStart();
+
+  const std::unique_ptr<Cpu> &GetCpu() const;
+  void SetCpu(std::unique_ptr<Cpu> &cpu);
+
+  const std::unique_ptr<Memory> &GetMemory() const;
+  void SetMemory(std::unique_ptr<Memory> &memory);
+
+  const std::unique_ptr<HardDisk> &GetHardDisk() const;
+  void SetHardDisk(std::unique_ptr<HardDisk> &hard_disk);
+
+  const std::unique_ptr<Display> &GetDisplay() const;
+  void SetDisplay(std::unique_ptr<Display> &display);
+
+  const std::unique_ptr<Keyboard> &GetKeyboard() const;
+  void SetKeyboard(std::unique_ptr<Keyboard> &keyboard);
+
+  // extend method for debug
+  std::string to_string();
+
+ private:
+  //
+  std::unique_ptr<Cpu> cpu_;
+  std::unique_ptr<Memory> memory_;
+  std::unique_ptr<HardDisk> hard_disk_;
+  std::unique_ptr<Display> display_;
+  std::unique_ptr<Keyboard> keyboard_;
 };
 
 class Builder {

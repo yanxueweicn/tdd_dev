@@ -10,8 +10,56 @@ void Computer::InitSetup() { std::cout << "Computer InitSetup!!!\n"; }
 void Computer::SetupGame() { std::cout << "Computer SetupGame!!!\n"; }
 
 void Computer::GameStart() { std::cout << "Computer GameStart!!!\n"; }
+const std::unique_ptr<Cpu> &Computer::GetCpu() const {
+  return cpu_;
+}
+void Computer::SetCpu(std::unique_ptr<Cpu> &cpu) {
+  cpu_ = std::move(cpu);
+}
 
-void Builder::MakeCpu() { std::cout << "***MakeCpu() must be override\n"; }
+const std::unique_ptr<Memory> &Computer::GetMemory() const {
+  return memory_;
+}
+void Computer::SetMemory(std::unique_ptr<Memory> &memory) {
+  memory_ = std::move(memory);
+}
+const std::unique_ptr<HardDisk> &Computer::GetHardDisk() const {
+  return hard_disk_;
+}
+void Computer::SetHardDisk(std::unique_ptr<HardDisk> &hard_disk) {
+  hard_disk_ = std::move(hard_disk);
+}
+const std::unique_ptr<Display> &Computer::GetDisplay() const {
+  return display_;
+}
+void Computer::SetDisplay(std::unique_ptr<Display> &display) {
+  display_ = std::move(display);
+}
+const std::unique_ptr<Keyboard> &Computer::GetKeyboard() const {
+  return keyboard_;
+}
+void Computer::SetKeyboard(std::unique_ptr<Keyboard> &keyboard) {
+  keyboard_ = std::move(keyboard);
+}
+
+std::string Computer::to_string() {
+  std::string ret;
+  ret.reserve(128);
+
+  ret.append("computer={");
+  ret.append("cpu=").append(cpu_ ? cpu_->to_string() : "");
+  ret.append(",memory=").append(memory_ ? memory_->to_string() : "");
+  ret.append(",hard_disk=").append(hard_disk_ ? hard_disk_->to_string() : "");
+  ret.append(",display=").append(display_ ? display_->to_string() : "");
+  ret.append(",keyboard=").append(keyboard_ ? keyboard_->to_string() : "");
+  ret.append("}");
+
+  return ret;
+}
+
+void Builder::MakeCpu() {
+  std::cout << "***MakeCpu() must be override\n";
+}
 
 void Builder::MakeMemory() {
   std::cout << "*** MakeMemory() must be override ***\n";
@@ -72,15 +120,30 @@ LenovoBuilder::LenovoBuilder()
       hard_disk_(new WesternDatabase()), display_(new Samsung()),
       keyboard_(new Lenovo()) {}
 
-void LenovoBuilder::MakeCpu() { std::cout << "MakeCpu "; }
+void LenovoBuilder::MakeCpu() {
+  computer_.SetCpu(cpu_);
+  std::cout << "MakeCpu ";
+}
 
-void LenovoBuilder::MakeMemory() { std::cout << "MakeMemory "; }
+void LenovoBuilder::MakeMemory() {
+  computer_.SetMemory(memory_);
+  std::cout << "MakeMemory ";
+}
 
-void LenovoBuilder::MakeHardDisk() { std::cout << "MakeHardDisk "; }
+void LenovoBuilder::MakeHardDisk() {
+  computer_.SetHardDisk(hard_disk_);
+  std::cout << "MakeHardDisk ";
+}
 
-void LenovoBuilder::MakeDisplay() { std::cout << "MakeDisplay "; }
+void LenovoBuilder::MakeDisplay() {
+  computer_.SetDisplay(display_);
+  std::cout << "MakeDisplay ";
+}
 
-void LenovoBuilder::MakeKeyboard() { std::cout << "MakeKeyboard "; }
+void LenovoBuilder::MakeKeyboard() {
+  computer_.SetKeyboard(keyboard_);
+  std::cout << "MakeKeyboard ";
+}
 
 Computer *LenovoBuilder::GetResult() { return &computer_; }
 
@@ -95,14 +158,10 @@ std::string LenovoBuilder::to_string() {
 
   ret.append("LenovoBuilder");
   ret.append("{");
+
   ret.append("make_order_desc=").append(make_order_desc_);
-  ret.append("|parts={");
-  ret.append("cpu=").append(cpu_->to_string());
-  ret.append(",memory=").append(memory_->to_string());
-  ret.append(",hard_disk=").append(hard_disk_->to_string());
-  ret.append(",display=").append(display_->to_string());
-  ret.append(",keyboard=").append(keyboard_->to_string());
-  ret.append("}");
+  ret.append("|").append(computer_.to_string());
+
   ret.append("}");
 
   return ret;
@@ -113,15 +172,30 @@ DellBuilder::DellBuilder()
       hard_disk_(new Seagate()), display_(new Philips()),
       keyboard_(new Logitech()) {}
 
-void DellBuilder::MakeCpu() { std::cout << "MakeCpu "; }
+void DellBuilder::MakeCpu() {
+  computer_.SetCpu(cpu_);
+  std::cout << "MakeCpu ";
+}
 
-void DellBuilder::MakeMemory() { std::cout << "MakeMemory "; }
+void DellBuilder::MakeMemory() {
+  computer_.SetMemory(memory_);
+  std::cout << "MakeMemory ";
+}
 
-void DellBuilder::MakeHardDisk() { std::cout << "MakeHardDisk "; }
+void DellBuilder::MakeHardDisk() {
+  computer_.SetHardDisk(hard_disk_);
+  std::cout << "MakeHardDisk ";
+}
 
-void DellBuilder::MakeDisplay() { std::cout << "MakeDisplay "; }
+void DellBuilder::MakeDisplay() {
+  computer_.SetDisplay(display_);
+  std::cout << "MakeDisplay ";
+}
 
-void DellBuilder::MakeKeyboard() { std::cout << "MakeKeyboard "; }
+void DellBuilder::MakeKeyboard() {
+  computer_.SetKeyboard(keyboard_);
+  std::cout << "MakeKeyboard ";
+}
 
 std::string DellBuilder::to_string() {
   std::string ret;
@@ -129,14 +203,10 @@ std::string DellBuilder::to_string() {
 
   ret.append("DellBuilder");
   ret.append("{");
+
   ret.append("make_order_desc=").append(make_order_desc_);
-  ret.append("|parts={");
-  ret.append("cpu=").append(cpu_->to_string());
-  ret.append(",memory=").append(memory_->to_string());
-  ret.append(",hard_disk=").append(hard_disk_->to_string());
-  ret.append(",display=").append(display_->to_string());
-  ret.append(",keyboard=").append(keyboard_->to_string());
-  ret.append("}");
+  ret.append("|").append(computer_.to_string());
+
   ret.append("}");
 
   return ret;
