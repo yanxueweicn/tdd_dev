@@ -19,6 +19,15 @@ std::string to_string(const std::unique_ptr<T> &src) {
   return ret;
 }
 
+template<typename T, typename= typename std::enable_if<
+    std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
+std::string to_string(const std::shared_ptr<T> &src) {
+  std::string ret;
+  ret.reserve(64);
+  ret.append(src ? src->to_string() : "");
+  return ret;
+}
+
 template<typename T, typename Collection=std::vector<std::unique_ptr<T>>,
     typename=typename std::enable_if<
         std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
