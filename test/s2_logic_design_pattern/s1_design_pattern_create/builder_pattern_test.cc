@@ -13,7 +13,22 @@ void ComputerSetup(Computer &computer) {
 }
 } // namespace
 
+TEST(ToStringUniquePtr, Normal) {
+  std::string src = to_string(std::unique_ptr<Cpu>(new Intel()));
+  EXPECT_STREQ(src.c_str(), "Intel");
+}
+
+TEST(ToStringVectorUniquePtr, Normal) {
+  std::vector<std::unique_ptr<Cpu>> src_vec;
+  src_vec.push_back(std::unique_ptr<Cpu>(new Intel()));
+  src_vec.push_back(std::unique_ptr<Cpu>(new Amd()));
+  std::string src = to_string<Cpu>(src_vec);
+  EXPECT_STREQ(src.c_str(), "Intel_Amd");
+
+}
+
 TEST(BuilderPattern, Normal) {
+
   // LenovoBuilder
   std::unique_ptr<Builder> builder(new LenovoBuilder());
   EXPECT_STREQ(builder->to_string().c_str(),
@@ -33,5 +48,5 @@ TEST(BuilderPattern, Normal) {
   if (computer_ptr)
     ComputerSetup(*computer_ptr);
   EXPECT_STREQ(builder->to_string().c_str(),
-               "DellBuilder{make_order_desc=2cpu->memory->2hard_disk->2display->keyboard|computer={cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}}");
+               "DellBuilder{make_order_desc=2cpu->memory->2hard_disk->2display->keyboard|computer={cpu=Amd_Amd,memory=Kingston,hard_disk=Seagate_Seagate,display=Philips_Philips,keyboard=Logitech}}");
 }

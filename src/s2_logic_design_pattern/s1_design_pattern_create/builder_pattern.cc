@@ -10,51 +10,54 @@ void Computer::InitSetup() { std::cout << "Computer InitSetup!!!\n"; }
 void Computer::SetupGame() { std::cout << "Computer SetupGame!!!\n"; }
 
 void Computer::GameStart() { std::cout << "Computer GameStart!!!\n"; }
-const std::unique_ptr<Cpu> &Computer::GetCpu() const {
-  return cpu_;
-}
-void Computer::SetCpu(std::unique_ptr<Cpu> &cpu) {
-  cpu_ = std::move(cpu);
-}
-
-const std::unique_ptr<Memory> &Computer::GetMemory() const {
-  return memory_;
-}
-void Computer::SetMemory(std::unique_ptr<Memory> &memory) {
-  memory_ = std::move(memory);
-}
-const std::unique_ptr<HardDisk> &Computer::GetHardDisk() const {
-  return hard_disk_;
-}
-void Computer::SetHardDisk(std::unique_ptr<HardDisk> &hard_disk) {
-  hard_disk_ = std::move(hard_disk);
-}
-const std::unique_ptr<Display> &Computer::GetDisplay() const {
-  return display_;
-}
-void Computer::SetDisplay(std::unique_ptr<Display> &display) {
-  display_ = std::move(display);
-}
-const std::unique_ptr<Keyboard> &Computer::GetKeyboard() const {
-  return keyboard_;
-}
-void Computer::SetKeyboard(std::unique_ptr<Keyboard> &keyboard) {
-  keyboard_ = std::move(keyboard);
-}
 
 std::string Computer::to_string() {
   std::string ret;
   ret.reserve(128);
 
   ret.append("computer={");
-  ret.append("cpu=").append(cpu_ ? cpu_->to_string() : "");
-  ret.append(",memory=").append(memory_ ? memory_->to_string() : "");
-  ret.append(",hard_disk=").append(hard_disk_ ? hard_disk_->to_string() : "");
-  ret.append(",display=").append(display_ ? display_->to_string() : "");
-  ret.append(",keyboard=").append(keyboard_ ? keyboard_->to_string() : "");
+  ret.append("cpu=").append(::to_string < Cpu > (cpu_vec_));
+  ret.append(",memory=").append(::to_string < Memory > (memory_vec_));
+  ret.append(",hard_disk=").append(::to_string < HardDisk > (hard_disk_vec_));
+  ret.append(",display=").append(::to_string < Display > (display_vec_));
+  ret.append(",keyboard=").append(::to_string < Keyboard > (keyboard_vec_));
   ret.append("}");
 
   return ret;
+}
+const std::vector<std::unique_ptr<Cpu>> &Computer::GetCpuVec() const {
+  return cpu_vec_;
+}
+void Computer::SetCpuVec(std::unique_ptr<Cpu> &cpu_ptr) {
+  cpu_vec_.push_back(std::move(cpu_ptr));
+}
+
+const std::vector<std::unique_ptr<Memory>> &Computer::GetMemoryVec() const {
+  return memory_vec_;
+}
+void Computer::SetMemoryVec(std::unique_ptr<Memory> &memory_ptr) {
+  memory_vec_.push_back(std::move(memory_ptr));
+}
+
+const std::vector<std::unique_ptr<HardDisk>> &Computer::GetHardDiskVec() const {
+  return hard_disk_vec_;
+}
+void Computer::SetHardDiskVec(std::unique_ptr<HardDisk> &hard_disk_ptr) {
+  hard_disk_vec_.push_back(std::move(hard_disk_ptr));
+}
+
+const std::vector<std::unique_ptr<Display>> &Computer::GetDisplayVec() const {
+  return display_vec_;
+}
+void Computer::SetDisplayVec(std::unique_ptr<Display> &display_ptr) {
+  display_vec_.push_back(std::move(display_ptr));
+}
+
+const std::vector<std::unique_ptr<Keyboard>> &Computer::GetKeyboardVec() const {
+  return keyboard_vec_;
+}
+void Computer::SetKeyboardVec(std::unique_ptr<Keyboard> &keyboard_ptr) {
+  keyboard_vec_.push_back(std::move(keyboard_ptr));
 }
 
 void Builder::MakeCpu() {
@@ -96,11 +99,12 @@ Computer *Director::Construct() {
   builder_.MakeHardDisk();
   builder_.MakeKeyboard();
   builder_.MakeDisplay();
+
   return builder_.GetResult();
 }
 
 Computer *Director::ConstructStrong() {
-  // 可以按照自己的顺序来建造
+  // 可以按照自己的顺序来建造，以及不同数量
   // 2cpu->memory->2hard_disk->2display->keyboard
   builder_.MakeOrderDesc("2cpu->memory->2hard_disk->2display->keyboard");
 
@@ -112,36 +116,39 @@ Computer *Director::ConstructStrong() {
   builder_.MakeDisplay();
   builder_.MakeDisplay();
   builder_.MakeKeyboard();
+
   return builder_.GetResult();
 }
 
-LenovoBuilder::LenovoBuilder()
-    : cpu_(new Intel()), memory_(new Samsung()),
-      hard_disk_(new WesternDatabase()), display_(new Samsung()),
-      keyboard_(new Lenovo()) {}
+LenovoBuilder::LenovoBuilder() = default;
 
 void LenovoBuilder::MakeCpu() {
-  computer_.SetCpu(cpu_);
+  std::unique_ptr<Cpu> one(new Intel());
+  computer_.SetCpuVec(one);
   std::cout << "MakeCpu ";
 }
 
 void LenovoBuilder::MakeMemory() {
-  computer_.SetMemory(memory_);
+  std::unique_ptr<Memory> one(new Samsung());
+  computer_.SetMemoryVec(one);
   std::cout << "MakeMemory ";
 }
 
 void LenovoBuilder::MakeHardDisk() {
-  computer_.SetHardDisk(hard_disk_);
+  std::unique_ptr<HardDisk> one(new WesternDatabase());
+  computer_.SetHardDiskVec(one);
   std::cout << "MakeHardDisk ";
 }
 
 void LenovoBuilder::MakeDisplay() {
-  computer_.SetDisplay(display_);
+  std::unique_ptr<Display> one(new Samsung());
+  computer_.SetDisplayVec(one);
   std::cout << "MakeDisplay ";
 }
 
 void LenovoBuilder::MakeKeyboard() {
-  computer_.SetKeyboard(keyboard_);
+  std::unique_ptr<Keyboard> one(new Lenovo());
+  computer_.SetKeyboardVec(one);
   std::cout << "MakeKeyboard ";
 }
 
@@ -167,33 +174,35 @@ std::string LenovoBuilder::to_string() {
   return ret;
 }
 
-DellBuilder::DellBuilder()
-    : cpu_(new Amd()), memory_(new Kingston()),
-      hard_disk_(new Seagate()), display_(new Philips()),
-      keyboard_(new Logitech()) {}
+DellBuilder::DellBuilder() = default;
 
 void DellBuilder::MakeCpu() {
-  computer_.SetCpu(cpu_);
+  std::unique_ptr<Cpu> one(new Amd());
+  computer_.SetCpuVec(one);
   std::cout << "MakeCpu ";
 }
 
 void DellBuilder::MakeMemory() {
-  computer_.SetMemory(memory_);
+  std::unique_ptr<Memory> one(new Kingston());
+  computer_.SetMemoryVec(one);
   std::cout << "MakeMemory ";
 }
 
 void DellBuilder::MakeHardDisk() {
-  computer_.SetHardDisk(hard_disk_);
+  std::unique_ptr<HardDisk> one(new Seagate());
+  computer_.SetHardDiskVec(one);
   std::cout << "MakeHardDisk ";
 }
 
 void DellBuilder::MakeDisplay() {
-  computer_.SetDisplay(display_);
+  std::unique_ptr<Display> one(new Philips());
+  computer_.SetDisplayVec(one);
   std::cout << "MakeDisplay ";
 }
 
 void DellBuilder::MakeKeyboard() {
-  computer_.SetKeyboard(keyboard_);
+  std::unique_ptr<Keyboard> one(new Logitech());
+  computer_.SetKeyboardVec(one);
   std::cout << "MakeKeyboard ";
 }
 
