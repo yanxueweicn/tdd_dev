@@ -8,8 +8,10 @@
 #include <memory>
 #include <string>
 #include <vector>
+#include <type_traits>
 
-template<typename T>
+template<typename T, typename= typename std::enable_if<
+    std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
 std::string to_string(const std::unique_ptr<T> &src) {
   std::string ret;
   ret.reserve(64);
@@ -17,7 +19,9 @@ std::string to_string(const std::unique_ptr<T> &src) {
   return ret;
 }
 
-template<typename T, typename Collection=std::vector<std::unique_ptr<T>>>
+template<typename T, typename Collection=std::vector<std::unique_ptr<T>>,
+    typename=typename std::enable_if<
+        std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
 std::string to_string(const Collection &src) {
   std::string ret;
   ret.reserve(64);
@@ -196,7 +200,6 @@ class LenovoBuilder : public Builder {
 
  private:
   Computer computer_;
-
   //
   std::string make_order_desc_;
 };
@@ -223,12 +226,6 @@ class DellBuilder : public Builder {
 
  private:
   Computer computer_;
-  //
-  std::unique_ptr<Cpu> cpu_;
-  std::unique_ptr<Memory> memory_;
-  std::unique_ptr<HardDisk> hard_disk_;
-  std::unique_ptr<Display> display_;
-  std::unique_ptr<Keyboard> keyboard_;
   //
   std::string make_order_desc_;
 };
