@@ -36,8 +36,11 @@ TEST(BuilderPattern, Normal) {
                "|computer={cpu=,memory=,hard_disk=,display=,keyboard=}}");
   Director director(*builder);
   Computer *computer_ptr = director.Construct();
-  if (computer_ptr)
-    ComputerSetup(*computer_ptr);
+  ASSERT_TRUE(computer_ptr != nullptr);
+
+  ComputerSetup(*computer_ptr);
+  EXPECT_STREQ(computer_ptr->to_string().c_str(),
+               "computer={cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}");
   EXPECT_STREQ(builder->to_string().c_str(),
                "LenovoBuilder{make_order_desc=cpu->memory->hard_disk->keyboard->display"
                "|computer={cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}}");
@@ -47,8 +50,11 @@ TEST(BuilderPattern, Normal) {
   builder.reset(new DellBuilder());
   Director director2(*builder);
   computer_ptr = director2.ConstructStrong();
-  if (computer_ptr)
-    ComputerSetup(*computer_ptr);
+  ASSERT_TRUE(computer_ptr != nullptr);
+
+  ComputerSetup(*computer_ptr);
+  EXPECT_STREQ(computer_ptr->to_string().c_str(),
+               "computer={cpu=Amd_Amd,memory=Kingston,hard_disk=Seagate_Seagate,display=Philips_Philips,keyboard=Logitech}");
   EXPECT_STREQ(builder->to_string().c_str(),
                "DellBuilder{make_order_desc=2cpu->memory->2hard_disk->2display->keyboard"
                "|computer={cpu=Amd_Amd,memory=Kingston,hard_disk=Seagate_Seagate,display=Philips_Philips,keyboard=Logitech}}");

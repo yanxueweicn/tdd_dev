@@ -36,9 +36,11 @@ ComputerSetup(*computer_ptr);
 
 ```
 EXPECT_STREQ(builder.to_string().c_str(),
-    "LenovoBuilder{cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}")
+    "LenovoBuilder{make_order_desc=cpu->memory->hard_disk->keyboard->display"
+    "|computer={cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}}")
 EXPECT_STREQ(builder.to_string().c_str(),
-    "DellBuilder{cpu=Amd,memory=Kingston,hard_disk=Seagate,display=Philips,keyboard=Logitech}")
+    "DellBuilder{make_order_desc=2cpu->memory->2hard_disk->2display->keyboard"
+    "|computer={cpu=Amd_Amd,memory=Kingston,hard_disk=Seagate_Seagate,display=Philips_Philips,keyboard=Logitech}}")
 
 ```
 
