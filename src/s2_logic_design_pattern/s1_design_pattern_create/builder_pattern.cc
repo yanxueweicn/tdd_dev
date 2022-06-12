@@ -8,7 +8,7 @@
 void Computer::InitSetup() { std::cout << "Computer InitSetup!!!\n"; }
 void Computer::SetupGame() { std::cout << "Computer SetupGame!!!\n"; }
 void Computer::GameStart() { std::cout << "Computer GameStart!!!\n"; }
-std::string Computer::to_string() {
+std::string Computer::to_string() const {
   std::string ret;
   ret.reserve(128);
 

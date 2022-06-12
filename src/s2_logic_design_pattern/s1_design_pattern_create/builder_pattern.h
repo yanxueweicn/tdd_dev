@@ -93,7 +93,7 @@ class Computer {
   void SetKeyboardVec(std::unique_ptr<Keyboard> &keyboard_ptr);
 
   // extend method for debug
-  std::string to_string();
+  std::string to_string() const;
 
  private:
   //

@@ -12,7 +12,13 @@ void ComputerSetup(Computer &computer) {
   computer.GameStart();
 }
 } // namespace
-
+TEST(ToStringComputer, Normal) {
+  Computer computer;
+  EXPECT_STREQ(computer.to_string().c_str(),
+               "computer={cpu=,memory=,hard_disk=,display=,keyboard=}");
+  EXPECT_STREQ(to_string(computer).c_str(),
+               "computer={cpu=,memory=,hard_disk=,display=,keyboard=}");
+}
 TEST(ToStringUniquePtr, Normal) {
   std::string src = to_string(std::unique_ptr<Cpu>(new Intel()));
   EXPECT_STREQ(src.c_str(), "Intel");
