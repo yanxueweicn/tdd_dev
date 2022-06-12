@@ -16,29 +16,38 @@
 
 # 3、测试用例
 
-```
-// 用户使用联想
-std::unique_ptr<Builder> builder(new LenovoBuilder());
-Director director(*builder);
-Computer* computer_ptr=director.Construt();
-ComputerSetup(*computer_ptr);
-
-// 另外一个用户使用dell
-builder.reset(new DellBuilder());
-Director director2(*builder);
-computer_ptr=director2.ConstrutStrong();
-ComputerSetup(*computer_ptr);
-```
-
 ## 3.1、正常的
 
 ```
-EXPECT_STREQ(builder.to_string().c_str(),
-    "LenovoBuilder{make_order_desc=cpu->memory->hard_disk->keyboard->display"
-    "|computer={cpu=Intel,memory=Samsung,hard_disk=WesternData,display=Samsung,keyboard=Lenovo}}")
-EXPECT_STREQ(builder.to_string().c_str(),
-    "DellBuilder{make_order_desc=2cpu->memory->2hard_disk->2display->keyboard"
-    "|computer={cpu=Amd_Amd,memory=Kingston,hard_disk=Seagate_Seagate,display=Philips_Philips,keyboard=Logitech}}")
+// 先生成邮件模板
+Mail mail(company_a@tencent.com,cp@tencent.com,"诚邀[北京分公司]参加新品分布会","您好，诚挚邀请前来参加腾讯公司新产品XXX大会！");
+EXPECT_STREQ(mail.to_string().c_str(),
+    "Mail={receivers=company_x@tencent.com,sender=cp@tencent.com"",subject=诚邀[XX分公司]参加新品分布会,"
+    "content=您好，诚挚邀请前来参加腾讯公司新产品XXX大会！}");
+    
+// 对company_a(北京),company_b(上海),company_c(深圳)复制发送
+Mail mail_bj=mail.clone();
+mail_bj.set_receivers(company_a@tencent.com).set_subject_var1("北京")；
+EXPECT_STREQ(mail_bj.to_string().c_str(),
+    "Mail={receivers=company_a@tencent.com,sender=cp@tencent.com"",subject=诚邀[北京分公司]参加新品分布会,"
+    "content=您好，诚挚邀请前来参加腾讯公司新产品XXX大会！}");
+MailSend(mail_bj); 
+    
+Mail mail_sh=mail.clone();
+mail_sh.set_receivers(company_b@tencent.com).set_subject_var1("上海");
+EXPECT_STREQ(mail_sh.to_string().c_str(),
+    "Mail={receivers=company_a@tencent.com,sender=cp@tencent.com"",subject=诚邀[上海分公司]参加新品分布会,"
+    "content=您好，诚挚邀请前来参加腾讯公司新产品XXX大会！}");
+MailSend(mail_sh); 
+    
+Mail mail_sz=mail.clone();
+mail_sz.set_receivers(company_b@tencent.com).set_subject_var1("深圳");
+EXPECT_STREQ(mail_sz.to_string().c_str(),
+    "Mail={receivers=company_c@tencent.com,sender=cp@tencent.com"",subject=诚邀[深圳分公司]参加新品分布会,"
+    "content=您好，诚挚邀请前来参加腾讯公司新产品XXX大会！}");
+// 发送
+MailSend(mail_sz); 
+    
 
 ```
 
