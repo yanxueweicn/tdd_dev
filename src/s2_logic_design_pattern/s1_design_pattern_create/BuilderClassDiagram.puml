@@ -1,10 +1,16 @@
 @startuml
 skin rose
 
-abstract class Computer {
-    void InitSetup();
-    void SetupGame();
-    void GameStart();
+ class Computer {
+    + void InitSetup();
+    + void SetupGame();
+    + void GameStart();
+    ==members==
+    - std::vector<std::unique_ptr<Cpu>> cpu_vec_;
+    - std::vector<std::unique_ptr<Memory>> memory_vec_;
+    - std::vector<std::unique_ptr<HardDisk>> hard_disk_vec_;
+    - std::vector<std::unique_ptr<Display>> display_vec_;
+    - std::vector<std::unique_ptr<Keyboard>> keyboard_vec_;
 }
 abstract class Builder {
     virtual void MakeCpu();

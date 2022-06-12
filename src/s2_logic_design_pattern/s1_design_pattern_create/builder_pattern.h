@@ -12,6 +12,24 @@
 
 template<typename T, typename= typename std::enable_if<
     std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
+std::string to_string(const T &src) {
+  std::string ret;
+  ret.reserve(64);
+  ret.append(src.to_string());
+  return ret;
+}
+
+template<typename T, typename= typename std::enable_if<
+    std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
+std::string to_string(const T *src) {
+  std::string ret;
+  ret.reserve(64);
+  ret.append(src ? src->to_string() : "");
+  return ret;
+}
+
+template<typename T, typename= typename std::enable_if<
+    std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
 std::string to_string(const std::unique_ptr<T> &src) {
   std::string ret;
   ret.reserve(64);
@@ -31,15 +49,17 @@ std::string to_string(const std::shared_ptr<T> &src) {
 template<typename T, typename Collection=std::vector<std::unique_ptr<T>>,
     typename=typename std::enable_if<
         std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
-std::string to_string(const Collection &src) {
+std::string to_string(const Collection &src, int print_max_size = 10) {
   std::string ret;
   ret.reserve(64);
 
   int i = 0;
-  for (auto cit = src.begin(); cit != src.end(); ++cit, ++i) {
+  for (auto cit = src.begin(); cit != src.end() && i < print_max_size; ++cit, ++i) {
     if (i > 0) ret.append("_");
     ret.append(to_string(*cit));
   }
+  if (i == print_max_size)
+    ret.append("_...");
 
   return ret;
 }
@@ -86,6 +106,8 @@ class Computer {
 
 class Builder {
  public:
+  virtual ~Builder();
+
   virtual void MakeCpu();
 
   virtual void MakeMemory();
@@ -118,6 +140,7 @@ class Director {
 
 class Cpu {
  public:
+  virtual ~Cpu();
   virtual std::string to_string();
 };
 
@@ -133,6 +156,7 @@ class Amd : public Cpu {
 
 class Memory {
  public:
+  virtual ~Memory();
   virtual std::string to_string();
 };
 
@@ -144,6 +168,7 @@ class Kingston : public Memory {
 
 class HardDisk {
  public:
+  virtual ~HardDisk();
   virtual std::string to_string();
 };
 
@@ -159,6 +184,7 @@ class Seagate : public HardDisk {
 
 class Display {
  public:
+  virtual ~Display();
   virtual std::string to_string();
 };
 
@@ -174,6 +200,7 @@ class Philips : public Display {
 
 class Keyboard {
  public:
+  virtual ~Keyboard();
   virtual std::string to_string();
 };
 
