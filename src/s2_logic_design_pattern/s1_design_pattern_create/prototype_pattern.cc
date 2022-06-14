@@ -41,7 +41,7 @@ std::string Mail::sender() const {
 }
 
 Mail &Mail::set_subject(const char *subject) {
-  memset((void *) subject_, 0, sizeof(512));
+//  memset((void *) subject_, 0, sizeof(512));
   strncpy(subject_, subject, 512);
   return *this;
 }

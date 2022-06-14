@@ -150,7 +150,7 @@ void LenovoBuilder::MakeKeyboard() {
 
 Computer *LenovoBuilder::GetResult() { return &computer_; }
 void LenovoBuilder::MakeOrderDesc(const std::string &desc) {
-  Builder::MakeOrderDesc(desc);
+//  Builder::MakeOrderDesc(desc);
   make_order_desc_.assign(desc);
 }
 
@@ -206,7 +206,7 @@ std::string DellBuilder::to_string() {
 
 Computer *DellBuilder::GetResult() { return &computer_; }
 void DellBuilder::MakeOrderDesc(const std::string &desc) {
-  Builder::MakeOrderDesc(desc);
+//  Builder::MakeOrderDesc(desc);
   make_order_desc_.assign(desc);
 }
 
