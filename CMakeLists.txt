@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
-project(tdd_dev)
+
+set(project_name tdd_dev)
+project(${project_name})
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -14,7 +16,7 @@ include_directories(src)
 include_directories(test)
 
 
-add_executable(tdd_dev
+add_executable(${project_name}
         src/main.cc
         src/s1_comm/comm.cc
         src/s1_comm/simple_object_pool.h
@@ -33,10 +35,10 @@ add_executable(tdd_dev
         #test/sample9_unittest.cc
         #test/sample10_unittest.cc
         test/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern_test.cc
-        )
+        test/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern_test.cc src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.cc src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.h)
 
 
-target_link_libraries(tdd_dev gtest_main gmock)
+target_link_libraries(${project_name} gtest_main gmock)
 
 #include(GoogleTest)
-#gtest_discover_tests(study_c_plus_plus)
+#gtest_discover_tests(${project_name})

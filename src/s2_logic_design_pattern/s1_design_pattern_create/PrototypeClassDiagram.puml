@@ -1,0 +1,47 @@
+@startuml
+skin rose
+
+ abstract class Prototype {
+    + virtual Prototype* Clone()=0;
+}
+
+class Mail extends Prototype {
+    + Mail(const std::string &receivers, const std::string &sender,
+       const char *subject, const std::string &content);
+    + Mail(const Mail &src);
+    + Mail& set_receivers(const std::string& receivers);
+    + ~Mail();
+    + std::string receivers() const;
+    + Mail& set_sender(const std::string& sender);
+    + std::string sender() const;
+    + Mail& set_subject(const char* subject);
+    + const char* subject() const;
+    + Mail& set_content(const std::string& content);
+    + std::string content() const;
+    + Prototype* Clone();
+    + std::string to_string();
+    ==members==
+    - std::string receivers_;
+    - std::string sender_;
+    - char* subject_;
+    - std::string content_;
+}
+
+class Resume extends Prototype{
+    + Resume& set_name(const std::string& name);
+    + std::string name() const;
+    + Resume& set_is_boy(bool is_boy);
+    + bool is_boy() const;
+    + Resume& set_age(int age);
+    + int age() const;
+    + Prototype* Clone();
+    + std::string to_string();
+    ==members==
+    - std::string name_;
+    - bool is_boy_;
+    - int age_;
+}
+
+
+
+@enduml

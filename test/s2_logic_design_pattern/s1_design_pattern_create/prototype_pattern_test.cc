@@ -1,24 +1,16 @@
-# Prototype Pattern Demo
+//
+// Created by fanyan on 2022/6/14.
+//
+#include "src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.h"
+#include "gtest/gtest.h"
 
-# 1、需求说明
+namespace {
+void MailSend(const Mail &src) {
+  std::cout << " Mail Send...!" << std::endl;
+}
+}
 
-生成一个邮件模板，可以根据不同类型的接收人，只作简单修改主题就可以发送不同的人
-
-# 2、任务分解
-
-## 2.1、产生邮件对象
-
-### 2.1.1、邮件包含：接收人、发送人、主题、邮件正文、附件等
-
-## 2.2、每个不同类型的接收人名不同且显示主题不同
-
-## 2.3、邮件生成后，就直接发送
-
-# 3、测试用例
-
-## 3.1、正常的
-
-```
+TEST(Mail, NoramlSend) {
   // 先生成邮件模板
   Mail mail("company_x@tencent.com",
             "cp@tencent.com",
@@ -42,26 +34,4 @@
   EXPECT_STREQ(mail.to_string().c_str(),
                "Mail{receivers=company_x@tencent.com,sender=cp@tencent.com,subject=welcome [shenzhen] participant join,"
                "content=Hello,welcome to tencent new product show!}");
-
-```
-
-## 3.2、不正常的
-
-```
-#、有不支持的配件 unknown
-EXPECT_TRUE(builder.to_string().find("unknown")!=std::string::npos)
-```
-
-### 3.2.1、值类型不对
-
-### 3.2.2、极大值
-
-### 3.2.3、极小值
-
-# 4、编码
-
-## 4.1、写好框架
-
-## 4.2、定好方法和类名：画好类图
-
-# 5、运行测试
+}
