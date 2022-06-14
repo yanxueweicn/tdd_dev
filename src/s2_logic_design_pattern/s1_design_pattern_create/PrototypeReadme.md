@@ -31,16 +31,16 @@
 // 对company_a(北京),company_b(上海)复制发送
   std::unique_ptr<Mail> mail_bj((Mail *) mail.Clone());
   mail_bj->set_receivers("company_a@tencent.com").set_subject("welcome [beijing] participant join");
-  EXPECT_STREQ(mail.to_string().c_str(),
-               "Mail{receivers=company_x@tencent.com,sender=cp@tencent.com,subject=welcome [shenzhen] participant join,"
+  EXPECT_STREQ(mail_bj->to_string().c_str(),
+               "Mail{receivers=company_a@tencent.com,sender=cp@tencent.com,subject=welcome [beijing] participant join,"
                "content=Hello,welcome to tencent new product show!}");
 // 发送
   MailSend(*mail_bj);
 
   std::unique_ptr<Mail> mail_sh((Mail *) mail.Clone());
   mail_sh->set_receivers("company_b@tencent.com").set_subject("welcome [shanghai] participant join");
-  EXPECT_STREQ(mail.to_string().c_str(),
-               "Mail{receivers=company_x@tencent.com,sender=cp@tencent.com,subject=welcome [shenzhen] participant join,"
+  EXPECT_STREQ(mail_sh->to_string().c_str(),
+               "Mail{receivers=company_b@tencent.com,sender=cp@tencent.com,subject=welcome [shanghai] participant join,"
                "content=Hello,welcome to tencent new product show!}");
 
 ```
