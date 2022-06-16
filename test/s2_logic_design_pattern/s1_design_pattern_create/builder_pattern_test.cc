@@ -31,6 +31,13 @@ TEST(ToStringVectorUniquePtr, Normal) {
   std::string src = to_string<Cpu>(src_vec);
   EXPECT_STREQ(src.c_str(), "Intel_Amd");
 
+  std::vector<int> src_one = {1, 2, 3};
+  std::string ret = to_string<int, std::vector<int> >(src_one);
+  EXPECT_STREQ(ret.c_str(), "1_2_3");
+
+  std::string ret2 = to_string<int>(src_one);
+  EXPECT_STREQ(ret2.c_str(), "1_2_31");
+
 }
 
 TEST(BuilderPattern, Normal) {

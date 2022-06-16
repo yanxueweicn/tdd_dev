@@ -10,12 +10,20 @@
 #include <vector>
 #include <type_traits>
 
-template<typename T, typename= typename std::enable_if<
-    std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
+template<typename T, typename std::enable_if<
+    std::is_same<std::string, decltype(std::declval<T>().to_string())>::value, T *>::type= nullptr>
 std::string to_string(const T &src) {
   std::string ret;
   ret.reserve(64);
   ret.append(src.to_string());
+  return ret;
+}
+
+template<typename T, typename= typename std::enable_if<std::is_arithmetic<T>::value>::type>
+std::string to_string(const T &src) {
+  std::string ret;
+  ret.reserve(64);
+  ret.append(std::to_string(src));
   return ret;
 }
 
@@ -46,12 +54,10 @@ std::string to_string(const std::shared_ptr<T> &src) {
   return ret;
 }
 
-template<typename T, typename Collection=std::vector<std::unique_ptr<T>>,
-    typename=typename std::enable_if<
-        std::is_same<std::string, decltype(std::declval<T>().to_string())>::value>::type>
+template<typename T, typename Collection=std::vector<std::unique_ptr<T>>>
 std::string to_string(const Collection &src, int print_max_size = 10) {
   std::string ret;
-  ret.reserve(64);
+  ret.reserve(128);
 
   int i = 0;
   for (auto cit = src.begin(); cit != src.end() && i < print_max_size; ++cit, ++i) {
