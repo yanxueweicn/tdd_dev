@@ -36,7 +36,7 @@ TEST(ToStringVectorUniquePtr, Normal) {
   EXPECT_STREQ(ret.c_str(), "1_2_3");
 
   std::string ret2 = to_string<int>(src_one);
-  EXPECT_STREQ(ret2.c_str(), "1_2_31");
+  EXPECT_STREQ(ret2.c_str(), "1_2_3");
 
 }
 

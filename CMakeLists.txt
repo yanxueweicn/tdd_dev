@@ -24,6 +24,10 @@ add_executable(${project_name}
         src/s2_logic_service/service_sort_input.cc
         src/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern.h
         src/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern.cc
+        src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.h
+        src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.cc
+        src/s3_db/db_tool.cc
+        src/s3_db/store_service.cc
         ####
         #test/s1_comm/comm_test.cc
         #test/s1_comm/cplusplus_new_feature_test.cc
@@ -34,8 +38,11 @@ add_executable(${project_name}
         #test/sample8_unittest.cc
         #test/sample9_unittest.cc
         #test/sample10_unittest.cc
-        test/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern_test.cc
-        test/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern_test.cc src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.cc src/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern.h)
+        #test/s2_logic_design_pattern/s1_design_pattern_create/builder_pattern_test.cc
+        #test/s2_logic_design_pattern/s1_design_pattern_create/prototype_pattern_test.cc
+        test/s3_db/db_tool_test.cc
+        test/s3_db/mock_store_service.h
+        )
 
 
 target_link_libraries(${project_name} gtest_main gmock)
