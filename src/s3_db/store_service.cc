@@ -4,10 +4,10 @@
 
 #include "store_service.h"
 
-bool StoreService::add_one_row(const string &one_row_info) {
+bool StoreService::add_one_row(const std::string &one_row_info) {
   return false;
 }
 
-string StoreService::find_one_row_by_key(const string &key) {
+std::string StoreService::find_one_row_by_key(const std::string &key) {
   return std::string();
 }

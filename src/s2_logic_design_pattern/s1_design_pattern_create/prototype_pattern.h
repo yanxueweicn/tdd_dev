@@ -32,7 +32,7 @@ class Mail : public Prototype {
   Mail &set_content(const std::string &content);
   std::string content() const;
 
-  Prototype *Clone();
+  Prototype *Clone() override;
 
   std::string to_string();
 
@@ -57,7 +57,7 @@ class Resume : public Prototype {
 
   int age() const;
 
-  Prototype *Clone();
+  Prototype *Clone() override;
 
   std::string to_string();
 
