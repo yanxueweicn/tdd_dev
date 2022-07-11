@@ -9,5 +9,5 @@ bool StoreService::add_one_row(const std::string &one_row_info) {
 }
 
 std::string StoreService::find_one_row_by_key(const std::string &key) {
-  return std::string();
+  return {};
 }
